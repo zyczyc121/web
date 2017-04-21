@@ -1,0 +1,8 @@
+{
+  "name": "platform",
+  "version": "1.0.0",
+  "dependencies": {
+    "less": "^2.6.1",
+    "yuglify": "^0.1.4"
+  }
+}
