@@ -1,0 +1,67 @@
+{% extends "course/base.html" %}
+{% load crispy_forms_tags %}
+{% load staticfiles %}
+{% block title %} Edit Detail {% endblock %}
+{% block content %}
+    <div class="row col-xs-12"><h2>{{ assignment.title }}</h2></div>
+    {% include "course/components/create_pipeline.html" with active="data" %}
+    <div class="row">
+        <div class="col-xs-12 col-md-12 col-lg-12">
+            <table class="detail-table">
+                <caption>Data Files</caption>
+                {% for datum in competition.data.all %}
+                    <tr>
+                        <th>{{ datum.name }}</th>
+                        <td>{{ datum.filetype }}</td>
+                        <td>{{ datum.size|filesizeformat }}</td>
+                        <td>
+                            <a href="{% url 'course:delete_data' course.pk assignment.pk datum.pk %}">Delete</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-md-12 col-lg-12">
+            <div id="id-progress" class="progress ">
+                <div class="progress-bar progress-bar-success"></div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-md-12 col-lg-12">
+            <div class="btn-group pull-right">
+                <span class="btn btn-success fileinput-button" >
+                    <i class="glyphicon glyphicon-plus"></i>
+                    <span>Upload File</span>
+                    <input id="fileupload" type="file" name="file">
+                </span>
+                <a class="btn btn-primary" href="{% url 'course:edit_detail' course.pk assignment.pk %}">Next</a>
+            </div>
+        </div>
+    </div>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/jquery-upload/jquery.fileupload.css' %}"/>
+    <script type="application/javascript" src="{% static 'jquery-ui-1.11.4/jquery-ui.min.js' %}"></script>
+    <script type="application/javascript" src="{% static 'js/jquery.iframe-transport.js' %}"></script>
+    <script type="application/javascript" src="{% static 'js/jquery.fileupload.js' %}"></script>
+    <script>
+        url = "{% url 'course:add_data' course.pk assignment.pk %}"
+        $(function () {
+            $('#fileupload').fileupload({
+                url: url,
+                dataType: 'json',
+                formData: [
+                    {name: "csrfmiddlewaretoken", value: "{{ csrf_token }}"},
+                ],
+                done: function (e, data) {
+                    window.location.reload()
+                },
+                progressall: function (e, data) {
+                    var progress = parseInt(data.loaded / data.total * 100, 10);
+                    $('#progress .progress-bar').css('width', progress + '%')
+                }
+            })
+        });
+    </script>
+{% endblock %}

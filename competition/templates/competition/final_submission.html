@@ -1,0 +1,96 @@
+{% extends "competition/base.html" %}
+{% load staticfiles %}
+
+{% block title %} Make Final Submission {% endblock %}
+
+{% block content %}
+    
+    {% if lang.code == 'zh-hans' %}
+        <br><h3>最终提交</h3><br>
+        <div class="row">
+            <p>你的提交将视为队伍 <strong>{{ team.name }}</strong> 的提交</p>
+            {% if current_submission %}
+            <p>你已提交文件:  <strong>{{ current_submission }}</strong></p>
+            {% endif %}
+
+            {% if final_times_left <= 0 %}
+                <p>今天的提交次数已用完，你不能再提交测试集预测结果.</p>
+                <p>注意：评测结果将会在比赛结束后统一放出,分数取你所提交的所有测试集预测文件中得分最高的结果.</p>
+            {% else %}
+                <p>你今天还能提交 {{ final_times_left }} 次测试集预测结果.</p>
+                <p>注意：评测结果将会在比赛结束后统一放出,分数取你所提交的所有测试集预测文件中得分最高的结果.</p>
+                <div class="col-md-7 p0">
+                    <br /><br />
+                    <form method="post" enctype="multipart/form-data" action="{% url 'competition:final_submission' competition.uid %}">
+                        {% csrf_token %}
+                        <input id="uploadFile" placeholder="Choose File" disabled="disabled" />
+                        <div class="fileUpload btn btn-primary">
+                            <span>浏览</span>
+                            <input id="submissionFile" name="submissionFile" type="file" class="upload" />
+                        </div>
+                        <input id="uploadBtn" type="submit" value="Upload" class="btn btn-primary" disabled="disabled"/>
+                    </form>
+                </div>
+                <div class="col-md-4">
+                    <div>
+                        <p><span class="glyphicon glyphicon-file"></span></p>
+                        <p>请提交一个 csv 文件 (.csv)</p>
+                    </div>
+                    <div>
+                        <p><span class="glyphicon glyphicon-align-left"></span></p>
+                        <p>预测结果应该包含 {{ competition.final_num_line }} 行记录.</p>
+                    </div>
+                </div>
+            {% endif %}  
+        </div>
+    {% else %}
+        <br><h3>Make a final submission</h3><br>
+        <div class="row">
+            <p>You're submitting as part of Team <strong>{{ team.name }}</strong></p>
+            {% if current_submission %}
+            <p>You have submitted  <strong>{{ current_submission }}</strong></p>
+            {% endif %}
+
+            {% if final_times_left <= 0 %}
+                <p>You can't make more submissions of result on the testing data today.</p>
+                <p><strong>Note：the final leaderboard will be released after the competition, and your score will be the best one among your submissions of result on the testing data.</strong></p>
+            {% else %}
+                <p>You can still submit {{ final_times_left }} time{{ final_times_left|pluralize }} of result on the testing data today.</p>
+                <p><strong>Note：the final leaderboard will be released after the competition, and your score will be the best one among your submissions of result on the testing data.</strong></p>
+
+                <div class="col-md-7 p0">
+                    <br /><br />
+                    <form method="post" enctype="multipart/form-data" action="{% url 'competition:final_submission' competition.uid %}">
+                        {% csrf_token %}
+                        <input id="uploadFile" placeholder="Choose File" disabled="disabled" />
+                        <div class="fileUpload btn btn-primary">
+                           <span>Browse</span>
+                           <input id="submissionFile" name="submissionFile" type="file" class="upload" />
+                            </div>
+                        <input id="uploadBtn" type="submit" value="Upload" class="btn btn-primary" disabled="disabled"/>
+                    </form>
+                </div>
+
+                <div class="col-md-4">
+                    <div>
+                        <p><span class="glyphicon glyphicon-file"></span></p>
+                        <p>Please submit a csv file (.csv)</p>
+                    </div>
+                    <div>
+                        <p><span class="glyphicon glyphicon-align-left"></span></p>
+                        <p>We expect the solution file to have {{ competition.final_num_line }} predictions.</p>
+                    </div>
+                </div>
+
+            {% endif %}
+        </div>
+    {% endif %}    
+
+    <script>
+        document.getElementById("submissionFile").onchange = function () {
+            document.getElementById("uploadFile").value = this.value;
+            document.getElementById("uploadBtn").disabled = false;
+        };
+    </script>
+
+{% endblock %}

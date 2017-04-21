@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}Activate your account {% endblock %}
+{% block body %}
+    {#    A validation mail has been sent to {{ user.email }}. Click#}
+    {#    <a href="{% url 'user:resend_activation_mail' activation.id %}">here</a> to send a new one.#}
+    <div class="row pt30">
+        <div class="col-md-6 col-md-offset-3  col-xs-6 col-xs-offset-3  col-sm-6 col-sm-offset-3">
+            {% if lang.code == 'zh-hans' %}
+                <h1 class="mb10">
+                    感谢你的注册
+                </h1>
+                <p>
+                    我们已经发了一封邮件给你.请点击里面的链接激活你的账户.
+                    该邮件可能被某些服务器分类为垃圾邮件.
+                </p>
+            {% else %}
+                <h1 class="mb10">
+                    Thanks for registering
+                </h1>
+                <p>
+                    We have sent an email to you. Please click the link inside to activate your account.
+                    It may be classified as spam by some email service providers.
+                </p>
+            {% endif %}
+            
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,75 @@
+{% extends "competition/base.html" %}
+
+{% block title %}Final Leaderboard {% endblock %}
+
+{% block content %}
+
+    {% if lang.code == 'zh-hans' %}
+        <br><h3 class="mb10">最终得分 - {{ competition.name }}</h3><br>
+    {% else %}
+        <br><h3 class="mb10">Final Leaderboard - {{ competition.name_en }}</h3><br>
+    {% endif %}
+
+    <div class="leaderboard-info mb20">
+        {% if lang.code == 'zh-hans' %}
+            <p>最终排行榜将在比赛结束后放出. </p>
+            <p>如果你发现有参赛者用多个账户参加比赛，请联系管理员.</p>
+        {% else %}
+            <p>Final Leaderboard will be released after the competition ended. </p>
+            <p>If you see anyone use multiple accounts, please let us know.</p>
+        {% endif %}
+    </div>
+    <table class="table-hover" id="id-leaderboard">
+        <thead>
+        <tr>
+            <th>#</th>
+
+            {% if lang.code == 'zh-hans' %}
+                <th>队伍名</th>
+                <th>成绩</th>
+                <th>最终提交次数</th>
+            {% else %}
+                <th>Team Name</th>
+                <th>Score</th>
+                <th>Final Entries</th>
+            {% endif %}
+
+        </tr>
+        </thead>
+        {% for team in rank %}
+            <tr id="team-{{ team.team_id }}">
+                <td class="rank">
+                    {{ team.rank }}
+                </td>
+                <td>
+                    <div>
+                        {% if team.single %}
+                            <a class="team-single"
+                               href="{% url 'user:user' team.leader_id %}">{{ team.leader_name }}</a>
+                        {% else %}
+                            <a target="_blank" class="team-multi">{{ team.team_name }} <span
+                                    class="glyphicon glyphicon-th-list"></span></a>
+                            <ul class="team-members">
+                                {% for m in team.members %}
+                                    <li><a href="{% url 'user:user' m.id %}">{{ m.name }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                </td>
+                {% if team.score >= competition.final_showscore_min %}
+                    <td class="score">{{ team.score|floatformat:5 }}</td>
+                {% else %}
+                    <td class="score"></td>
+                {% endif %}
+                <td>{{ team.entries }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    <script type="text/javascript">
+        $('.team-multi').click(function () {
+            $(this).siblings("ul").toggle()
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends 'competition/base.html' %}
+
+{% block title %}Form a team?{% endblock %}
+
+{% block content %}
+
+    {% if lang.code == 'zh-hans' %}
+        <h3>提交给 {{ competition.name }}</h3>
+        <div class="row" id="id-submit-as">
+            <div class="col-md-5" style="border: none;">
+                <a href="{% url 'competition:create_team' competition.uid 'single' %}"
+                        class="btn btn-lg btn-primary">作为个人参赛</a>
+                <p>你仍然可以和其他人组队.</p>
+            </div>
+            <div class="col-md-5">
+                <a href="{% url 'competition:create_team' competition.uid 'team' %}"
+                    class="btn btn-lg btn-primary">创建队伍</a>
+            </div>
+        </div>
+    {% else %}
+        <h3>Submit to {{ competition.name_en }}</h3>
+        <div class="row" id="id-submit-as">
+            <div class="col-md-5" style="border: none;">
+                <a href="{% url 'competition:create_team' competition.uid 'single' %}"
+                    class="btn btn-lg btn-primary">Complete as myself</a>
+                <p>You can still join other teams or invite other users.</p>
+            </div>
+            <div class="col-md-5">
+                <a href="{% url 'competition:create_team' competition.uid 'team' %}"
+                    class="btn btn-lg btn-primary">Create a team</a>
+            </div>
+        </div>
+    {% endif %}
+
+{% endblock %}

@@ -1,0 +1,73 @@
+{% extends 'competition/base.html' %}
+{% block title %}My Submission{% endblock %}
+{% block content %}
+   
+    {% if lang.code == 'zh-hans' %}
+        <br><h3>你的提交</h3><br>
+        <div class="page-info">
+            <p>你的提交将作为队伍 <span class="team-name">{{ team.name }}</span> 的一部分</p>
+            <p>我们将会使用public分数最好的那个提交作为验证集预测结果.</p>
+        </div>
+    {% else %}
+        <br><h3>Your submissions</h3><br>
+        <div class="page-info">
+            <p>You're submitting as part of team <span class="team-name">{{ team.name }}</span></p>
+            <p>The submissions with highest public score will be used(on the verification set).</p>
+        </div>
+    {% endif %}
+
+
+    <table class="table" id="id-submission-table">
+        <tr>
+            {% if lang.code == 'zh-hans' %}
+                <th>Public分数</th>
+                <th>文件</th>
+                <th>提交时间 (utc-0)</th>
+            {% else %}
+                <th>Public Score</th>
+                <th>File</th>
+                <th>Submit Time (utc-0)</th>
+            {% endif %}
+
+        </tr>
+        {% for submission in submissions %}
+        <tr >
+            <td>
+                {% if submission.status == 2 %}
+                    {{ submission.public_score }}
+                {% elif submission.status == 1 %}
+                    <span class="submission-pending">{{ submission.message }}</span>
+                {% else %}
+                    <span class="submission-error">{{ submission.message }}</span>
+                {% endif %}
+            </td>
+            <td> <a href="#">{{ submission.display_name }}</a></td>
+            <td>{{ submission.submit_datetime}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <script>
+        $("#id-final-submit").click(function(e) {
+            var selected_sub = [];
+            e.preventDefault();
+            $(".submit-check:checked").each(function(i){
+                selected_sub.push($(this).attr('data-submission-id'))
+            })
+
+            if(selected_sub.length > $(this).attr("data-max-submit")){
+                alert("Exceeds limit")
+            } else {
+                console.log($(this).attr('href'))
+                $.getJSON($(this).attr('href'), {'sub_list': selected_sub.join(',')}, function(data){
+                    if(data.success){
+                        alert("Success")
+                    } else {
+                        alert(data.msg)
+                    }
+                })
+            }
+            return false;
+        })
+    </script>
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends "course/base.html" %}
+{% load crispy_forms_tags %}
+{% block title %} Edit Detail {% endblock %}
+{% block content %}
+    <div class="row col-xs-12 col-md-12 col-lg-12"><h2>{{ assignment.title }}</h2></div>
+    {% include "course/components/create_pipeline.html" with active="detail" %}
+    <div class="row">
+        <div class="col-xs-12 col-md-12 col-lg-12">
+            <table class="detail-table">
+                <caption>Edit Detail Pages</caption>
+                <tr>
+                    <th>
+                        <a href="{% url 'competition:index' competition.pk %}" target="_blank">Introduction</a>
+                    </th>
+                    <td>
+                        <a href="{% url 'course:edit_detail_page' course.pk assignment.pk 'introduction' %}"
+                           class="editlink">Edit</a>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <a href="{% url 'competition:rules' competition.pk %}" target="_blank">Rules</a>
+                    </th>
+                    <td>
+                        <a href="{% url 'course:edit_detail_page' course.pk assignment.pk 'rules' %}" class="editlink">Edit</a>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <a href="{% url 'competition:data' competition.pk %}" target="_blank">Data</a>
+                    </th>
+                    <td>
+                        <a href="{% url 'course:edit_detail_page' course.pk assignment.pk 'data' %}" class="editlink">Edit</a>
+                    </td>
+                </tr>
+                {% for detail in competition.detail_set.all %}
+                    <tr>
+                        <th>
+                            <a href="{% url 'competition:detail' competition.pk detail.slug %}"
+                               target="_blank">{{ detail.title }}</a>
+                        </th>
+                        <td>
+                            <a href="{% url 'course:edit_detail_page' course.pk assignment.pk detail.slug %}"
+                               class="editlink">Edit</a>
+                        </td>
+                        <td>
+                            <a href="{% url 'course:delete_detail_page' course.pk assignment.pk detail.slug %}">Delete</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <div class="row col-xs-12 col-md-12 col-lg-12">
+            <div class="btn-group pull-right">
+                <a class="btn btn-success" href="{% url 'course:edit_detail_page' course.pk assignment.pk %}">
+                    <span class="glyphicon glyphicon-plus"></span> Add Page</a>
+                <a class="btn btn-primary" href="{% url 'course:edit_evaluation' course.pk assignment.pk %}">Next</a>
+            </div>
+        </div>
+{% endblock %}

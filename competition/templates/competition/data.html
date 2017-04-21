@@ -1,0 +1,74 @@
+{% extends "competition/base.html" %}
+{% block title %}Data{% endblock %}
+{% block content %}
+
+    {% if lang.code == 'zh-hans' %}
+        {% if competition.data.all %}
+        <br><h3 class="mb10">数据集</h3><br>
+        <table class="table table-striped row" id="id-data-table">
+        <!--<table class="table" id="id-data-table">-->
+            <tr>
+                <th>名称</th>
+                <th>格式</th>
+                <th>链接</th>
+                <th>提取码</th>
+            </tr>
+            {% for datum in competition.data.all %}
+                <tr>
+                    <td>
+                        {{ datum.name }}
+                    </td>
+                    <td>
+                        {{ datum.filetype}} ({{ datum.size|filesizeformat }})
+                    </td>
+                    <td>
+                        <a href="{{ datum.baidu_url }}">
+                            {{ datum.baidu_url }}
+                        </a>
+                    </td>
+                    <td>
+                        {{ datum.baidu_code }}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+        {% endif %}
+        <h3 class="mt10 mb10">Data Description</h3><br>
+        {{ competition.data_description|safe }}
+ 
+    {% else %}
+        {% if competition.data.all %}
+        <br><h3 class="mb10">Data Files</h3>
+        <table class="table table-striped row" id="id-data-table">
+        <!--<table class="table" id="id-data-table">-->
+            <tr>
+                <th>Name</th>
+                <th>Available format</th>
+                <th>url</th>
+                <th>code</th>
+            </tr>
+            {% for datum in competition.data.all %}
+                <tr>
+                    <td>
+                        {{ datum.name }}
+                    </td>
+                    <td>
+                        {{ datum.filetype}} ({{ datum.size|filesizeformat }})
+                    </td>
+                    <td>
+                        <a href="{{ datum.baidu_url }}">
+                            {{ datum.baidu_url }}
+                        </a>
+                    </td>
+                    <td>
+                        {{ datum.baidu_code }}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+        {% endif %}
+        <h3 class="mt10 mb10">Data Description</h3>
+        {{ competition.data_description_en|safe }}
+    {% endif %}
+    
+{% endblock %}

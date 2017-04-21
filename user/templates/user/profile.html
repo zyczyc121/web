@@ -1,0 +1,187 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load gravatar %}
+{% block title %}Profile{% endblock %}
+
+{% block body %}
+    <div class="mt25 ml10 mr10 pb50">
+        <form>
+
+            <div class="row mb20">
+                <div class="userinfo-header col-md-6 col-xs-6 col-sm-6 lh35" style="padding-left: 0px;">
+                    <span class="display_name">{{ view_otheruser.info.display_name }} </span>
+                    <span class="personal_tag">{{ view_otheruser.info.personal_tag }}</span>
+                </div>
+
+                {% if self %}
+                <div class="col-md-6  col-xs-6  col-sm-6 text-right" style="padding-right: 0px;">
+                    
+                    {% if lang.code == 'zh-hans' %}
+                        <a href="{% url 'user:edit_profile' %}" class="btn btn-primary" type="button">编辑人物简介</a>
+                    {% else %}
+                        <a href="{% url 'user:edit_profile' %}" class="btn btn-primary" type="button">Edit Profile</a>
+                    {% endif %}
+    
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="pt25 pb10 pl30 pr30 mb20" style="background-color: #F7F7F7;">
+                <div class="row">
+                    <div class="col-sm-3 col-md-3 col-xs-3 mb10">
+                        <img src="{% static 'img/default.jpg' %}" width="100%" style="width: 150px;"/>
+                    </div>
+                    <div class="col-sm-9 col-md-9 col-xs-9">
+                        {% if self %}
+                        <p><img src="{% static 'img/tag2.png' %}" width="100%" style="width: 15px;padding-right: 5px;"/>{{ user.email }}</p>
+                        {% endif %}
+
+                        {% if lang.code == 'zh-hans' %}
+                            <p><img src="{% static 'img/tag1.png' %}" width="100%" style="width: 15px;padding-right: 5px;"/>加入时间为 {{ view_otheruser.date_joined|date:'b d Y' }}</p>
+                        {% else %}
+                            <p><img src="{% static 'img/tag1.png' %}" width="100%" style="width: 15px;padding-right: 5px;"/>Joined at {{ view_otheruser.date_joined|date:'b d Y' }}</p>
+                        {% endif %}
+
+                    </div>
+                </div>
+
+                <div class="poa t10 r10">
+                    {% if view_otheruser.info.linkedin_url %}
+                    <a href="https://www.linkedin.com/in/{{ view_otheruser.info.linkedin_url }}" class="" style="display: inline-block;width: 34px;height: 40px;background-image: url('/static/img/list.png');background-repeat: no-repeat;background-position: -10px 0px;background-size: 200px;margin: 0 5px;"></a>
+                    {% endif %}
+                    {% if view_otheruser.info.github_account %}
+                    <a href="https://github.com/{{ view_otheruser.info.github_account }}" class="" style="display: inline-block;width: 34px;height: 40px;background-image: url('/static/img/list.png');background-repeat: no-repeat;background-position: -108px 0px;background-size: 200px;margin: 0 5px;"></a>
+                    {% endif %}
+                    {% if view_otheruser.info.twitter_account %}
+                    <a href="#" class="" style="display: inline-block;width: 34px;height: 40px;background-image: url('/static/img/list.png');background-repeat: no-repeat;background-position: -58px 0px;background-size: 200px;margin: 0 5px;"></a>
+                    {% endif %}
+{#                    <a href="#" class="" style="display: inline-block;width: 34px;height: 40px;background-image: url('/static/img/list.png');background-repeat: no-repeat;background-position: -158px 0px;background-size: 200px;margin: 0 5px;"></a>#}
+                </div>
+            </div>
+
+            <div class="pt25 pb10 pl30 pr30 mb20" style="background-color: #F7F7F7;">
+                <div class="form-group">
+
+                    {% if lang.code == 'zh-hans' %}
+                    <label for="">个人简历</label>
+                    {% else %}
+                    <label for="">Bio</label>
+                    {% endif %}
+
+{#                    <textarea class="form-control" rows="3" placeholder="Please type Email Address..."></textarea>#}
+                    <p>{{ view_otheruser.info.bio }}</p>
+
+                    {% if lang.code == 'zh-hans' %}
+                    <label for="">所在地</label>
+                    {% else %}
+                    <label for="">Location</label>
+                    {% endif %}
+
+                    <p>
+                        {% if view_otheruser.info.city %}
+                        <span>{{ view_otheruser.info.city }}, </span>
+                        {% endif %}
+                        {% if view_otheruser.info.province %}
+                        <span>{{ view_otheruser.info.province }}, </span>
+                        {% endif %}
+                        {% if view_otheruser.info.country %}
+                        <span>{{ view_otheruser.info.country }}</span>
+                        {% endif %}
+                </div>
+            </div>
+
+{#            <div class="pt25 pb10 pl30 pr30 mb20" style="background-color: #F7F7F7;">#}
+{#                <label for="">Competition Ranks</label>#}
+{#                <div class="form-group mt30">#}
+{#                    <div class="row mt10">#}
+{#                        <div class="col-sm-4 col-md-4 col-xs-4 mb15">#}
+{#                            <div class="thumbnail row">#}
+{#                                <div class="col-sm-4 col-md-4 mt10">#}
+{#                                    <img class="" src="{% static 'img/li.png' %}" width="100%" style="width: 60px;">#}
+{#                                </div>#}
+{#                                <div class="caption col-sm-8 col-md-8">#}
+{#                                    <h5>#}
+{#                                        <b>KDD CUP 2015</b>#}
+{#                                    </h5>#}
+{#                                    <small>2015/5/15 - 6/12</small>#}
+{#                                    <div class="mt5">#}
+{#                                        <dl>#}
+{#                                            <dt style="width: 50px;">rank:</dt>#}
+{#                                            <dd><span class="col2">650th</span>/1200</dd>#}
+{#                                        </dl>#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+{##}
+{##}
+{#                        <div class="col-sm-4 col-md-4 col-xs-4 mb15">#}
+{#                            <div class="thumbnail row">#}
+{#                                <div class="col-sm-4 col-md-4 mt10">#}
+{#                                    <img class="" src="{% static 'img/li.png' %}" width="100%" style="width: 60px;">#}
+{#                                </div>#}
+{#                                <div class="caption col-sm-8 col-md-8">#}
+{#                                    <h5>#}
+{#                                        <b>KDD CUP 2015</b>#}
+{#                                    </h5>#}
+{#                                    <small>2015/5/15 - 6/12</small>#}
+{#                                    <div class="mt5">#}
+{#                                        <dl>#}
+{#                                            <dt style="width: 50px;">rank:</dt>#}
+{#                                            <dd><span class="col2">650th</span>/1200</dd>#}
+{#                                        </dl>#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+{##}
+{#                        <div class="col-sm-4 col-md-4 col-xs-4 mb15">#}
+{#                            <div class="thumbnail row">#}
+{#                                <div class="col-sm-4 col-md-4 mt10">#}
+{#                                    <img class="" src="{% static 'img/li.png' %}" width="100%" style="width: 60px;">#}
+{#                                </div>#}
+{#                                <div class="caption col-sm-8 col-md-8">#}
+{#                                    <h5>#}
+{#                                        <b>KDD CUP 2015</b>#}
+{#                                    </h5>#}
+{#                                    <small>2015/5/15 - 6/12</small>#}
+{#                                    <div class="mt5">#}
+{#                                        <dl>#}
+{#                                            <dt style="width: 50px;">rank:</dt>#}
+{#                                            <dd><span class="col2">650th</span>/1200</dd>#}
+{#                                        </dl>#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+{##}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+
+            <div class="pt25 pb25 pl30 pr30" style="background-color: #F7F7F7;">
+                <div class="mb10">
+
+                    {% if lang.code == 'zh-hans' %}
+                    <label for="">技能</label>
+                    {% else %}
+                    <label for="">Skills</label>
+                    {% endif %}
+
+                </div>
+                <div class="tag-flow">
+                    {% for interest in view_otheruser.interests.all %}
+                    <button type="button" class="btn btn-primary btn-sm">{{ interest.name }}</button>
+                    {% endfor %}
+
+                    {% for tool in view_otheruser.tools.all %}
+                        <button type="button" class="btn btn-primary btn-sm">{{ tool.name }}</button>
+                    {% endfor %}
+                </div>
+
+            </div>
+        </form>
+    </div>
+
+
+{% endblock %}

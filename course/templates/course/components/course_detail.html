@@ -1,0 +1,80 @@
+{% load staticfiles %}
+
+{% if lang.code == 'zh-hans' %}
+    <li class="">
+        <div class="start"></div>
+        <div class="content">
+            {% if course.logo %}
+                <a href="{% url 'course:view' course.pk %}">
+                <img src="{{ MEDIA_URL }}{{ course.logo }}" style="width:150px;height:129px;padding-left: 51px;padding-top: 19px;padding-bottom: 19px;">
+                </a>
+            {% endif %}
+    
+            <div class="thumbnail_wrap1">
+                <h4>
+                    <a href="{% url 'course:view' course.pk %}" style="color:#000;">
+                        <span class="des_text p0" title="{{ course.name }}">{{ course.name }}</span>
+                    </a>
+                </h4>
+                <p style="color: #9B9B9B;padding-top: 3px;" title="{{ course.description }}" class="des_twoline">{{ course.description }}</p>
+                <div class="row">
+                    <dl class="col-xs-6 p0">
+                        <dd style="color: #000;">
+                            <img class="icon2" src="{% static 'img/re_img/skls.png' %}">
+                            <span>授课老师: {{ course.tutor_name }}</span>
+                        </dd>
+                        <dd style="color: #000;">
+                            <img class="icon2" src="{% static 'img/re_img/zbf.png' %}">
+                            <span>所属学院: {{ course.school }}</span>
+                        </dd>
+                    </dl>
+                    <dl class="col-xs-6 p0">
+                        <dd style="color: #000;">
+                            <img class="icon2" src="{% static 'img/re_img/skrq.png' %}">
+                            <span>上课日期: {{ course.start_datetime|date:'Y-m-d' }} ~ {{ course.end_datetime|date:'Y-m-d' }}</span>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </li>
+{% else %}
+    <li class="">
+        <div class="start"></div>
+        <div class="content">
+            {% if course.logo %}
+                <a href="{% url 'course:view' course.pk %}">
+                <img src="{{ MEDIA_URL }}{{ course.logo }}" style="width:150px;height:129px;padding-left: 51px;padding-top: 19px;padding-bottom: 19px;">
+                </a>
+            {% endif %}
+    
+            <div class="thumbnail_wrap1">
+                <h4>
+                    <a href="{% url 'course:view' course.pk %}" style="color:#000;">
+                        <span class="des_text p0" title="{{ course.name_en }}">{{ course.name_en }}</span>
+                    </a>
+                </h4>
+                <p style="color: #9B9B9B;padding-top: 3px;" title="{{ course.description_en }}" class="des_twoline">{{ course.description_en }}</p>
+                <div class="row">
+                    <dl class="col-xs-6 p0">
+                        <dd style="color: #000;">
+                            <img class="icon2" src="{% static 'img/re_img/skls.png' %}">
+                            <span>Teacher: {{ course.tutor_name }}</span>
+                        </dd>
+                        <dd style="color: #000;">
+                            <img class="icon2" src="{% static 'img/re_img/zbf.png' %}">
+                            <span>School: {{ course.school_en }}</span>
+                        </dd>
+                    </dl>
+                    <dl class="col-xs-6 p0">
+                        <dd style="color: #000;">
+                            <img class="icon2" src="{% static 'img/re_img/skrq.png' %}">
+                            <span>Timeline: {{ course.start_datetime|date:'Y-m-d' }} ~ {{ course.end_datetime|date:'Y-m-d' }}</span>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </li>
+{% endif %}
+

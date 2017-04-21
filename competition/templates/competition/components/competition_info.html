@@ -1,0 +1,88 @@
+{% load staticfiles %}
+
+{% if lang.code == 'zh-hans' %}
+    <li class="">
+        <div class="start"></div>
+        <div class="content">
+            {% if competition.logo %}
+                <a href="{% url 'competition:index' competition.uid %}">
+                <img src="{{ MEDIA_URL }}{{ competition.logo }}" style="width:150px;height:129px;padding-left: 51px;padding-top: 19px;padding-bottom: 19px;">
+                </a>
+            {% endif %}
+            <div class="thumbnail_wrap1" style="height:119px">
+                <h4>
+                    <a href="{% url 'competition:index' competition.uid %}" style="color:#000;">
+                        <span class="des_text p0" title="{{ competition.name }}">{{ competition.name }}</span>
+                    </a>
+                </h4>
+                {% if competition.description %}
+                    <p style="color: #9B9B9B;padding-top: 3px;" title="{{ competition.description }}" class="des_twoline">{{ competition.description }}</p>
+                {% endif %}
+                <dl style="position:absolute; bottom:0px">
+                    <dd style="color: #000;">
+                        <img class="icon2" src="{% static 'img/re_img/zbf.png' %}">
+                        <span>主办方:
+                        {% if competition.sponsor %}
+                            {{ competition.sponsor }}
+                        {% endif %}
+                        </span>
+                    </dd>
+                    <dd style="color: #000;">
+                        <img class="icon2" src="{% static 'img/re_img/sjz.png' %}">
+                        <span>时间轴:{{ competition.start_datetime|date:'Y-m-d' }} ~ {{ competition.end_datetime|date:'Y-m-d' }}</span>
+                    </dd>
+                </dl>
+            </div>
+        </div>
+        <div class="end">
+            <span>
+            {% if competition.award %}
+                {{ competition.award }}
+            {% endif %}
+            </span>
+        </div>
+    </li>
+{% else %}
+    <li class="">
+        <div class="start"></div>
+        <div class="content">
+            {% if competition.logo %}
+                <a href="{% url 'competition:index' competition.uid %}">
+                <img src="{{ MEDIA_URL }}{{ competition.logo }}" style="width:150px;height:129px;padding-left: 51px;padding-top: 19px;padding-bottom: 19px;">
+                </a>
+            {% endif %}
+            <div class="thumbnail_wrap1" style="height:119px">
+                <h4>
+                    <a href="{% url 'competition:index' competition.uid %}" style="color:#000;">
+                        <span class="des_text p0" title="{{ competition.name_en }}">{{ competition.name_en }}</span>
+                    </a>
+                </h4>
+                {% if competition.description_en %}
+                    <p style="color: #9B9B9B;padding-top: 3px;" title="{{ competition.description_en }}" class="des_twoline">{{ competition.description_en }}</p>
+                {% endif %}
+                <dl style="position:absolute; bottom:0px">
+                    <dd style="color: #000;">
+                        <img class="icon2" src="{% static 'img/re_img/zbf.png' %}">
+                        <span>Sponsor:
+                        {% if competition.sponsor_en %}
+                            {{ competition.sponsor_en }}
+                        {% endif %}
+                        </span>
+                    </dd>
+                    <dd style="color: #000;">
+                        <img class="icon2" src="{% static 'img/re_img/sjz.png' %}">
+                        <span>Timeline:{{ competition.start_datetime|date:'Y-m-d' }} ~ {{ competition.end_datetime|date:'Y-m-d' }}</span>
+                    </dd>
+                </dl>
+            </div>
+        </div>
+        <div class="end">
+            <span>
+            {% if competition.award %}
+                {{ competition.award }}
+            {% endif %}
+            </span>
+        </div>
+    </li>
+{% endif %}
+

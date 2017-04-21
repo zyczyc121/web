@@ -1,0 +1,150 @@
+{% extends 'competition/base.html' %}
+{% load staticfiles %}
+{% block title %}My Team{% endblock %}
+{% block content %}
+
+    {% ifequal team.leader user %}
+        <div class="row mt10">
+            <div class="col-lg-12">
+            
+                {% if lang.code == 'zh-hans' %}
+                    <label>队伍名</label>
+                {% else %}
+                    <label>Team Name</label>
+                {% endif %}    
+                
+                <div class="input-group">
+                    <input type="text" class="form-control" id="txtTeamName" value="{{ team.name }}"/>
+            <span class="input-group-btn">
+                {% if lang.code == 'zh-hans' %}
+                    <button class="btn btn-primary" id="btnUpdateTeamName" type="button" disabled="disabled">更新</button>
+                {% else %}
+                    <button class="btn btn-primary" id="btnUpdateTeamName" type="button" disabled="disabled">Update</button>
+                {% endif %} 
+            </span>
+                </div>
+
+
+            </div>
+        </div>
+
+        <div class="row mt10">
+            <div class="col-lg-12">
+                
+                {% if lang.code == 'zh-hans' %}
+                    <label>邀请队员</label>
+                {% else %}
+                    <label>Invite team member</label>
+                {% endif %}    
+                
+                <div class="input-group">
+                    <input type="text" class="form-control" id="txtUserEmail"
+                           placeholder="Enter the email of the user to invite"/>
+            <span class="input-group-btn">
+                {% if lang.code == 'zh-hans' %}
+                    <button class="btn btn-primary" id="btnInviteUser" type="button" disabled="disabled">邀请</button>
+                {% else %}
+                    <button class="btn btn-primary" id="btnInviteUser" type="button" disabled="disabled">Invite</button>
+                {% endif %} 
+            </span>
+                </div>
+            </div>
+        </div>
+        {% else %}
+
+    {% endifequal %}
+
+    <div class="row mt5">
+        <div class="col-lg-12">
+            <div class="alert alert-success" id="alertTeam" role="alert" style="display: none">Place</div>
+        </div>
+    </div>
+    <div class="row mt10">
+        <div class="col-lg-12">
+            {% for member in team.members.all %}
+                <div class="col-sm-3 col-md-3 col-xs-3">
+                    <div class="thumbnail text-center" style="border: none;background-color: transparent;">
+                        {% if member.info.avatar %}
+                            <img src="{{ MEDIA_URL }}/{{ member.info.avatar }}" alt="{{ member.info.display_name }}"
+                                 width="100%">
+                        {% else %}
+                            <img src="{% static 'img/default.jpg' %}" alt="{{ member.info.display_name }}" width="100%">
+                        {% endif %}
+                        <div class="caption">
+                            <p> {{ member.info.display_name }} ({{ member.email }})</p>
+                            {% ifequal member team.leader %}
+                                <small class="text-capitalize col2">Team Leader</small>
+                            {% endifequal %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <script>
+        function validate_email(txt){
+            var pattern = /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i
+            return txt.match(pattern) != null;
+        }
+        function showAlert(type, message) {
+            var comp = $("#alertTeam");
+            comp.show();
+            comp.removeClass();
+            comp.addClass("alert");
+            comp.addClass("alert-" + type);
+            comp.text(message);
+        }
+        $("#txtTeamName").bind("input propertychange", function () {
+            $("#btnUpdateTeamName").prop('disabled', false);
+        });
+        $("#txtUserEmail").bind("input propertychange", function () {
+            $("#btnInviteUser").prop('disabled', false);
+        });
+        $("#btnUpdateTeamName").click(function () {
+            var newName = $("#txtTeamName").val();
+            console.log(newName);
+            if (newName.length == 0) {
+                showAlert("danger", "Team name can't be empty");
+                return;
+            }
+            var url = "/competition/{{competition.uid}}/team/alter_name/" + newName;
+            console.log(url);
+            $.ajax({
+                url: url
+            }).done(function (data) {
+                console.log(data);
+                if (data.status == 'ok') {
+                    showAlert("success", "Team name updated successfully");
+                } else {
+                    showAlert("danger", data.msg);
+                }
+            });
+        });
+        $("#btnInviteUser").click(function () {
+            var email = $("#txtUserEmail").val();
+            if(!validate_email(email)){
+                showAlert("danger", "Not a valid email address");
+                return;
+            }
+            console.log(email);
+            if (email.length == 0) {
+                showAlert("danger", "Email is empty");
+                return;
+            }
+            var url = "/competition/{{competition.uid}}/team/invite_user/" + email;
+            
+            console.log(url);
+            $.ajax({
+                url: url
+            }).done(function (data) {
+                console.log(data);
+                if (data.status == 'ok') {
+                    showAlert("success", "Invitation email has been sent.");
+                } else {
+                    showAlert("danger", data.msg);
+                }
+            });
+        });
+    </script>
+
+{% endblock %}

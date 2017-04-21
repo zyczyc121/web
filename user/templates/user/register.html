@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block title %} Register {% endblock %}
+
+{% block body %}
+    <div class="row pt30">
+        <div class="col-md-5 col-md-offset-3  col-xs-6 col-xs-offset-1  col-sm-6 col-sm-offset-3">
+
+            {% if lang.code == 'zh-hans' %}
+                <h3 class="text-center">注册</h3>
+                <p class="text-center mb20">每个参赛者只允许有一个账户</p>
+            {% else %}
+                <h3 class="text-center">Sign Up</h3>
+                <p class="text-center mb20">Each individual may have only one account</p>
+            {% endif %}
+            {% crispy form %}
+
+        </div>
+    </div>
+
+<script>
+    var checkobj={username:"username",password:"password",display_name:"display_name",real_name:"real_name",mail:"email",password_confirm:"password_confirm",captcha_1:"captcha_1"}
+
+    XformCheck(document.getElementsByClassName("form-horizontal")[0],checkobj);
+    $(".form-horizontal").submit(function(){
+        var r  = true;
+        $("input[checkVal]").each(function(){
+            r = r && $(this).attr("checkVal");
+        });
+        if(r=="false"){
+            console.log(r);
+            return false;
+        }
+    });
+
+//    register bgimg
+//  $('body').css('background','url("../../static/img/blur_bg.jpg") center no-repeat');
+</script>
+{% endblock %}

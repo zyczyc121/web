@@ -1,0 +1,14 @@
+{% extends 'competition/base.html'%}
+
+{% block title %} Winners {% endblock %}
+{% block content %}
+
+    <div>
+        {% if lang.code == 'zh-hans' %}
+            {{ competition.winners|safe }}
+        {% else %}
+            {{ competition.winners_en|safe }}
+        {% endif %}
+    </div>
+
+{% endblock %}

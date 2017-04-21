@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block title %}contact{% endblock %}
+
+{% block body %}
+<div class='index min-wrapper'>
+    <div class="row">
+        <div style="background-color: #fff;">
+            <div class="row banner wrapper">
+                <div class="col-md-3 col-sm-3 col-xs-4 competition-logo">
+                    {% if competition.logo %}
+                        <img src="{{ MEDIA_URL }}{{ competition.logo }}"/>
+                    {% else %}
+                        <img src="{% static 'img/re_img/item2.jpg' %}"/>
+                    {% endif %}    
+                </div>
+                <div class="col-md-9 col-sm-9 col-xs-8 competition-info pt50">
+                    <div class="row header">
+                        <span>{{ competition.sponsor }}</span> •
+                        <span>{{ competition.award }}</span> •
+                        {% if competition.uid == 'kddcup2015' %}
+                            <span>821 支参赛队伍</span>
+                        {% else %}
+                            <span>{{ competition.teams.count }} 支参赛队伍</span>
+                        {% endif %}    
+    
+                    </div>
+                    <div class="row title pt10">
+                        {{ competition.name }}
+                    </div>
+    
+                    <div class="row pt15">
+                        <div id="comp-header-stat">
+                            <div id="comp-progress">
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%">
+                                        <span class="sr-only">20% Complete</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="comp-header-start">
+                                {{ competition.start_datetime|date:'Y-m-d' }}
+                            </div>
+                            <div id="comp-milestone-end">
+                                最终提交
+                            </div>
+                            <div id="comp-header-end">
+                                {{ competition.end_datetime|date:'Y-m-d' }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <!-- 当前位置 -->
+        <div class="wrapper" style="padding: 15px 10px;font-size: 15px;">
+            <img src="{% static 'img/re_img/home-1.png' %}" alt="" style="width: 12px;margin: -3px 3px 0 0;">
+            <a href="{% url 'index' %}"><span style="color: #4A4A4A">主页</span></a>
+            <span>&nbsp;&nbsp;>&nbsp;</span>
+            <a href="{% url 'competition:main' %}"><span style="color: #4A4A4A">比赛</span></a>
+            <span>&nbsp;&nbsp;>&nbsp;</span>
+            <span>{{ competition.name }}</span>
+        </div>
+    
+        <div class="wrapper" style="padding: 0 10px;margin-bottom: 40px;">
+            <div class="row">
+                <div class="col-xs-2 p0" id="myScrollspy">
+                    <ul class="nav nav-tabs nav-stacked">
+                        <li><span>介绍</span></li>
+                        <li class="active"><a href="#section-1" data-toggle="tab"><span></span>简介</a></li>
+                        <li><a href="#section-2" data-toggle="tab"><span></span>规则</a></li>
+                        <li><a href="#section-3" data-toggle="tab"><span></span>时间轴&奖励</a></li>
+                        <li><a href="#secti-4" data-toggle="tab"><span></span>数据</a></li>
+                        <li><a href="#section-5" data-toggle="tab"><span></span>测评方案</a></li>
+                        <li><a href="#section-6" data-toggle="tab"><span></span>FAQ</a></li>
+                        <li><a href="#section-7" data-toggle="tab"><span></span>组织者</a></li>
+
+                        <li><span>提交</span></li>
+                        <li><a href="#section-8" data-toggle="tab"><span></span>验证提交</a></li>
+                        {% if is_final_submit %}
+                            <li><a href="#section-9" data-toggle="tab"><span></span>最终提交</a></li>
+                        {% endif %}
+                        <li><a href="#section-10" data-toggle="tab"><span></span>我的提交</a></li>
+
+                        <li><span>其他</span></li>
+                        <li><a href="#section-11" data-toggle="tab"><span></span>我的队伍</a></li>
+                        <li><a href="#section-12" data-toggle="tab"><span></span>排行榜</a></li>
+                        {% if is_final %}
+                            <li><a href="#section-13" data-toggle="tab"><span></span>最终得分</a></li>
+                        {% endif %}
+                        {% if is_showwinners %}
+                            <li><a href="#section-14" data-toggle="tab"><span></span>获奖名单</a></li>
+                        {% endif %}
+
+                        <li><span>&nbsp;</span></li>
+                    </ul>
+                </div>
+    
+                <div class="col-xs-10" style="background-color: #fff;padding: 20px;min-height: 800px;    margin-top: 20px;">
+                    <div id="myTabContent" class="tab-content">
+                        <!-- 简介 -->
+                        <div class="tab-pane fade section-1 in active" id="section-1">
+                            {% include "competition/detail.html" with competition=competition %}
+                        </div>
+                        <!-- 规则 -->
+                        <div class="tab-pane fade section-2" id="section-2">222222</div>
+                        <!-- 数据 -->
+                        <div class="tab-pane fade section-3" id="section-3">33333333333</div>
+                        <!-- FAQ -->
+                        <div class="tab-pane fade section-4" id="section-4"></div>
+                        <!-- 测评方案 -->
+                        <div class="tab-pane fade section-5" id="section-5"></div>
+                        <!-- 时间轴&奖励 -->
+                        <div class="tab-pane fade section-6" id="section-6"></div>
+                        <!-- 组织者 -->
+                        <div class="tab-pane fade section-7" id="section-7"></div>
+                        <!-- 验证提交 -->
+                        <div class="tab-pane fade section-8" id="section-8"></div>
+                        <!-- 最终提交 -->
+                        <div class="tab-pane fade section-9" id="section-9"></div>
+                        <!-- 我的提交 -->
+                        <div class="tab-pane fade section-10" id="section-10"></div>
+                        <!-- 我的队伍 -->
+                        <div class="tab-pane fade section-11" id="section-11"></div>
+                        <!-- 排行榜 -->
+                        <div class="tab-pane fade section-12" id="section-12"></div>
+                        <!-- 最终得分 -->
+                        <div class="tab-pane fade section-13" id="section-13"></div>
+                        <!-- 获奖名单 -->
+                        <div class="tab-pane fade section-14" id="section-14"></div>
+                    </div>
+                </div>
+    
+            </div>
+        </div>
+    
+    </div>
+</div>
+    <script>
+        $(function(){
+            var final_ratio = 0.9;
+            var st = {{ competition.start_datetime|date:'U' }};
+            var final = {{ competition.final_submit_datetime|date:'U' }};
+            var ed = {{ competition.end_datetime|date:'U' }};
+            var now = {% now 'U' %};
+
+            var ratio = 0;
+            if(now<st){
+                ratio = 0;
+            } else if (now<=final){
+                ratio = final_ratio * (now-st)/(final-st);
+            } else if (now<=ed){
+                ratio = final_ratio + (1-final_ratio)*(now-final)/(ed-final)
+            } else {
+                ratio = 1
+            }
+
+            $("#comp-progress-going").css("width", ratio*100 +"%");
+        });
+    </script>
+{% endblock %}

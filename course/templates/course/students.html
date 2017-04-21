@@ -1,0 +1,81 @@
+{% extends "course/base.html" %}
+
+{% block title %} {{ course.name }} {% endblock %}
+
+{% block content %}
+    <div class="row">
+        {% if lang.code == 'zh-hans' %}
+            <h2 class="col-xs-12 col-md-12 col-lg-12">{{ course.name }}</h2>
+        {% else %}
+            <h2 class="col-xs-12 col-md-12 col-lg-12">{{ course.name_en }}</h2>
+        {% endif %}
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-md-12 col-lg-12">
+        {% if lang.code == 'zh-hans' %}
+            <table class="info-table">
+                <caption>学生</caption>
+                <tr>
+                    {% if manage or assistant %}
+                       <th>ID</th>
+                       <th>显示名称</th>
+                       <th>真实名称</th>
+                       <th>用户邮箱</th>
+                    {% else %}
+                       <th>显示名称</th>
+                    {% endif %}
+                </tr>
+                {% for student in object_list %}
+                    <tr>
+                    {% if manage or assistant %}
+                        <td>{{ student.id }}</td>
+                        <td><a href="{% url 'user:user' student.id %}">{{ student.info.display_name }}</a></td>
+                        <td>{{ student.info.real_name }}</td>
+                        <td>{{ student.email }}</td>
+                        <td><a href="{% url 'course:disapprove' course.pk student.pk %}?ref={{ request.path }}">Delete</a></td>
+                    {% else %}
+                        <td><a href="{% url 'user:user' student.id %}">{{ student.info.display_name }}</a></td>
+                    {% endif %}
+                    </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <table class="info-table">
+                <caption>Students</caption>
+                <tr>
+                    {% if manage or assistant %}
+                       <th>ID</th>
+                       <th>display_name</th>
+                       <th>real_name</th>
+                       <th>email</th>
+                    {% else %}
+                       <th>display_name</th>
+                    {% endif %}
+                </tr>
+                {% for student in object_list %}
+                    <tr>
+                    {% if manage or assistant %}
+                        <td>{{ student.id }}</td>
+                        <td><a href="{% url 'user:user' student.id %}">{{ student.info.display_name }}</a></td>
+                        <td>{{ student.info.real_name }}</td>
+                        <td>{{ student.email }}</td>
+                        <td><a href="{% url 'course:disapprove' course.pk student.pk %}?ref={{ request.path }}">Delete</a></td>
+                    {% else %}
+                        <td><a href="{% url 'user:user' student.id %}">{{ student.info.display_name }}</a></td>
+                    {% endif %}
+                    </tr>
+                {% endfor %}
+            </table>
+        {% endif %}
+            {% if is_paginated %}
+                <ul class="pagination pull-right">
+                    {% for page_no in paginator.page_range %}
+                        <li {% ifequal page_no page_obj.number %} class="active" {% endifequal %} >
+                            <a href="{% url 'course:students' course.pk page_no %}">{{ page_no }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

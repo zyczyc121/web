@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block title %}Competitions{% endblock %}
+
+{% block body %}
+
+<div class='index competition min-wrapper'>
+    <div style="background-color: #000;">
+        <div id="myCarousel" class="wrapper carousel slide">
+            <!-- 轮播（Carousel）项目 -->
+            <div class="carousel-inner">
+                <div class="item active">
+                    <img src="{% static 'img/re_img/banner-3.png' %}" alt="First slide" style="width: 100%">
+                    <div class="carousel-caption">
+                        <h2 style="border: none;">
+                            <img src="{% static 'img/re_img/machine.png' %}" style="width: 40px;margin-right: 20px;" alt="">Competition
+                        </h2>
+                        <br/>
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <div class="item">
+                                    <div style="background-image: url(../../../static/img/re_img/bmcs.png);"></div>
+                                    <p>{% if lang.code == 'zh-hans' %}报名参赛{% else %}Participate{% endif %}</p>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <div class="item">
+                                    <div style="background-image: url(../../../static/img/re_img/zjtd.png);"></div>
+                                    <p>{% if lang.code == 'zh-hans' %}组建团队{% else %}Create a team{% endif %}</p>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <div class="item">
+                                    <div style="background-image: url(../../../static/img/re_img/tjjg.png);"></div>
+                                    <p>{% if lang.code == 'zh-hans' %}提交结果{% else %}Submit{% endif %}</p>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <div class="item">
+                                    <div style="background-image: url(../../../static/img/re_img/zzdf.png);"></div>
+                                    <p>{% if lang.code == 'zh-hans' %}最终得分{% else %}Score{% endif %}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <hr class="col-xs-12" />
+                            <div class="col-xs-3">
+                                <div class="itemNum">
+                                    1
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <div class="itemNum">
+                                    2
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <div class="itemNum">
+                                    3
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <div class="itemNum">
+                                    4
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 当前位置 -->
+    <div class="wrapper" style="padding: 15px 10px;font-size: 15px;">
+        <img src="{% static 'img/re_img/home-1.png' %}" alt="" style="width: 12px;margin: -3px 3px 0 0;">
+        <a href="{% url 'index' %}"><span style="color: #4A4A4A">{% if lang.code == 'zh-hans' %}主页{% else %}Home{% endif %}</span></a>
+        <span>&nbsp;&nbsp;>&nbsp;</span>
+        <span>{% if lang.code == 'zh-hans' %}比赛{% else %}Competition{% endif %}</span>
+    </div>
+    
+    <div class="wrapper" style="margin-bottom: 40px;">
+        <div class="search">
+            <div class='title'>
+                <img class="icon" src="{% static 'img/re_img/jb.png' %}">
+                <span class="competition_tab_content">
+                    <div class="tab-content" style="display: inline">
+
+                    </div>
+                    {% if lang.code == 'zh-hans' %}比赛项目{% else %}Competition events{% endif %}
+                </span>
+            </div>
+
+            <ul class="option" role="tablist">
+                <li class="active" role="presentation"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">{% if lang.code == 'zh-hans' %}正在进行{% else %}Ongoing{% endif %}</a></li>
+                <li role="presentation"><a href="#home2" aria-controls="home2" role="tab" data-toggle="tab">{% if lang.code == 'zh-hans' %}即将开始{% else %}Coming{% endif %}</a></li>
+                <li role="presentation"><a href="#home3" aria-controls="home3" role="tab" data-toggle="tab">{% if lang.code == 'zh-hans' %}已经结束{% else %}Over{% endif %}</a></li>
+                {% if user.is_authenticated %}
+                    <li role="presentation"><a href="#home4" aria-controls="home4" role="tab" data-toggle="tab">{% if lang.code == 'zh-hans' %}我的竞赛{% else %}My competitions{% endif %}</a></li>
+                {% endif %}
+            </ul>
+
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="home">
+                    <ul class="list">
+                        {% for competition in in_competitions %}
+                            {% if not competition.invisible %}
+                                {% include "competition/components/competition_info.html" with competition=competition %}
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="home2">
+                    <ul class="list">
+                        {% for competition in go_competitions %}
+                            {% if not competition.invisible %}
+                                {% include "competition/components/competition_info.html" with competition=competition %}
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="home3">
+                    <ul class="list">
+                        {% for competition in over_competitions %}
+                            {% if not competition.invisible %}
+                                {% include "competition/components/competition_info.html" with competition=competition %}
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% if user.is_authenticated %}
+                    <div role="tabpane1" class="tab-pane" id="home4">
+                        <ul class="list">
+                            {% for competition in attend_competitions %}
+                                {% if not competition.invisible %}
+                                    {% include "competition/components/competition_info.html" with competition=competition %}
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends "course/base.html" %}
+{% load crispy_forms_tags %}
+{% block title %} {{ course.name }} - Edit {% endblock %}
+
+{% block content %}
+    <div class="row">
+        {% if lang.code == 'zh-hans' %}
+            <h2 class="col-xs-12 col-md-12 col-lg-12">{{ course.name }}</h2>
+        {% else %}
+            <h2 class="col-xs-12 col-md-12 col-lg-12">{{ course.name_en }}</h2>
+        {% endif %}
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-md-12 col-lg-12">
+            <form class="form-horizontal" action="{{ request.path }}" method="post">
+                {% crispy form form_helper %}
+                <div class="btn-group pull-right">
+                    <a class="btn btn-danger btn-default" href="{% url 'course:view' course.pk %}">Abort</a>
+                    <input type="submit" class="btn btn-primary" value="Save"/>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

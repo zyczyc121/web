@@ -1,0 +1,79 @@
+{% extends "course/base.html" %}
+
+{% block title %} {{ course.name }} {% endblock %}
+
+{% block content %}
+    <div class="row">
+        {% if lang.code == 'zh-hans' %}
+            <h2 class="col-xs-12 col-md-12 col-lg-12">{{ course.name }}</h2>
+        {% else %}
+            <h2 class="col-xs-12 col-md-12 col-lg-12">{{ course.name_en }}</h2>
+        {% endif %}
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-md-12 col-lg-12">
+            <table class="info-table"  id="id-leaderboard">
+            {% if lang.code == 'zh-hans' %}
+                <caption>课程排名</caption>
+                <thead>
+                <tr>
+                    <th>名次</th>
+                    <th>队伍名</th>
+                    <th>成绩</th>
+                    <th>提交次数</th>
+                </tr>
+                </thead>
+            {% else %}
+                <caption>Course-Rank</caption>
+                <thead>
+                <tr>
+                    <th>rank</th>
+                    <th>team_name</th>
+                    <th>score</th>
+                    <th>entries</th>
+                </tr>
+                </thead>
+            {% endif %}
+
+            {% for team in course_rank %}
+                <tr id="team-{{ team.team_id }}">
+                <td class="rank">
+                    {{ team.rank }}
+                </td>
+                <td><div>
+                    {% if team.single %}
+                        <a class="team-single"
+                           href="{% url 'user:user' team.leader_id %}">{{ team.leader_name }}</a>
+                    {% else %}
+                        <a target="_blank" class="team-multi">{{ team.team_name }} <span
+                                class="glyphicon glyphicon-th-list"></span></a>
+                        <ul class="team-members">
+                            {% for m in team.members %}
+                                <li><a href="{% url 'user:user' m.id %}">{{ m.name }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div></td>
+                <td class="score">{{ team.score|floatformat:5 }}</td>
+                <td>{{ team.entries }}</td>
+                </tr>
+            {% endfor %}
+            </table>
+
+            {% if is_paginated %}
+                <ul class="pagination pull-right">
+                    {% for page_no in paginator.page_range %}
+                        <li {% ifequal page_no page_obj.number %} class="active" {% endifequal %} >
+                            <a href="{% url 'course:students' course.pk page_no %}">{{ page_no }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+    </div>
+    <script type="text/javascript">
+        $('.team-multi').click(function () {
+            $(this).siblings("ul").toggle()
+        });
+    </script>
+{% endblock %}

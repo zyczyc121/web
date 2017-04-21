@@ -1,0 +1,21 @@
+{% extends "competition/base.html" %}
+{% load staticfiles %}
+
+{% block title %} Make Submission {% endblock %}
+{% block content %}
+
+    {% if lang.code == 'zh-hans' %}
+        <h2 class="mb10">
+            当前不允许提交
+        </h2>
+    {% else %}
+        <h2 class="mb10">
+            the submission is not allowed now
+        </h2>
+    {% endif %}
+
+
+    <div class="competition-detail">
+        {{ message }}
+    </div>
+{% endblock %}

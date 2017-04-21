@@ -1,0 +1,64 @@
+{% extends "course/base.html" %}
+
+{% block title %} {{ course.name }} - {{ assignment.title }}{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <h2 class="col-xs-12 col-md-12 col-lg-12">{{ course.name }} - {{ assignment.title }}</h2>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-md-12 col-lg-12">
+            <table class="info-table">
+                <caption>Basic Information</caption>
+                <tr>
+                    <th>Begin Date</th>
+                    <td>{{ assignment.start_datetime }}</td>
+                </tr>
+                <tr>
+                    <th>Deadline</th>
+                    <td>{{ assignment.end_datetime }}</td>
+                </tr>
+                <tr>
+                    <th>Description</th>
+                    <td>{{ assignment.description }}</td>
+                </tr>
+                <tr>
+                    <th>Entry</th>
+                    <td><a href="{% url 'competition:index' competition.pk %}">{{ competition.name }}</a></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-md-12 col-lg-12">
+            <table class="info-table">
+                <caption>Evaluation</caption>
+                <tr>
+                    <th>Evaluation</th>
+                    <td>{{ competition.get_evaluation_display }}</td>
+                </tr>
+                <tr>
+                    <th>Submission per day</th>
+                    <td>{{ competition.submit_per_day }}</td>
+                </tr>
+                <tr>
+                    <th>Final submission count</th>
+                    <td>{{ competition.final_submit_count }}</td>
+                </tr>
+                <tr>
+                    <th>Public truth</th>
+                    <td>{{ competition.public_truth }}</td>
+                </tr>
+                <tr>
+                    <th>Private truth</th>
+                    <td>{{ competition.private_truth }}</td>
+                </tr>
+            </table>
+            {% if manage %}
+                <a class="btn btn-primary pull-right" href="{% url 'course:edit_assignment' course.pk assignment.pk %}">
+                    Edit
+                </a>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

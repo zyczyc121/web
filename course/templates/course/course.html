@@ -1,0 +1,288 @@
+{% extends "course/base.html" %}
+
+{% block title %} {{ course.name }} {% endblock %}
+
+{% block content %}
+    <div class="row">
+        {% if lang.code == 'zh-hans' %}
+            <h2 class="col-xs-12 col-md-12 col-lg-12">{{ course.name }}</h2>
+        {% else %}
+            <h2 class="col-xs-12 col-md-12 col-lg-12">{{ course.name_en }}</h2>
+        {% endif %}
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-md-12 col-lg-12">
+            <table class="info-table">
+            {% if lang.code == 'zh-hans' %}
+                <caption>基本信息</caption>
+                <tr>
+                    <th>授课老师</th>
+                    <td>{{ course.tutor_name }}</td>
+                </tr>
+                {% if course.teaching_assistants.all %}
+                <tr>
+                    <th>助教</th>
+                    <td>
+                    {% for ta in course.teaching_assistants.all %}
+                        {{ ta.info.display_name }}
+                    {% endfor %}
+                    </td>
+                </tr>
+                {% endif %}
+                <tr>
+                    <th>所属院校</th>
+                    <td>{{ course.school }}</td>
+                </tr>
+                <tr>
+                    <th>课程时间</th>
+                    <td>{{ course.start_datetime }} - {{ course.end_datetime }}</td>
+                </tr>
+                <tr>
+                    <th>课程描述</th>
+                    <td>{{ course.description }}</td>
+                </tr>
+                <tr>
+                    <th>课程任务</th>
+                    <td><a href="{% url 'competition:index' course.competition.uid %}">{{ course.competition.name }}</a></td>
+                </tr>
+                {% if manage and course.register_code %}
+                <tr>
+                    <th>注册码</th>
+                    <td>{{ course.register_code }}</td>
+                </tr>
+                {% endif %}
+                <tr>
+                    <th>学生</th>
+                    <td>共{{ course.students.all.count }}名学生, <a href="{% url 'course:students' course.pk 1 %}">查看所有学生
+</a></td>
+                </tr>
+                {% if manage or assistant %}
+                <tr>
+                    <th>排名</th>
+                    <td>共{{ course.students.all.count }}名学生, <a href="{% url 'course:leaderboard' course.pk %}">查看学生排名</a></td>
+                </tr>
+                {% endif %}
+            {% else %}
+                <caption>Basic Information</caption>
+                <tr>
+                    <th>Tutor</th>
+                    <td>{{ course.tutor_name }}</td>
+                </tr>
+                {% if course.teaching_assistants.all %}
+                <tr>
+                    <th>Teaching Assistants</th>
+                    <td>
+                    {% for ta in course.teaching_assistants.all %}
+                        {{ ta.info.display_name }}
+                    {% endfor %}
+                    </td>
+                </tr>
+                {% endif %}
+                <tr>
+                    <th>School</th>
+                    <td>{{ course.school_en }}</td>
+                </tr>
+                <tr>
+                    <th>Session</th>
+                    <td>{{ course.start_datetime }} - {{ course.end_datetime }}</td>
+                </tr>
+                <tr>
+                    <th>Description</th>
+                    <td>{{ course.description_en }}</td>
+                </tr>
+                <tr>
+                    <th>Assignment</th>
+                    <td><a href="{% url 'competition:index' course.competition.uid %}">{{ course.competition.name }}</a></td>
+                </tr>
+                {% if manage and course.register_code %}
+                <tr>
+                    <th>Register code</th>
+                    <td>{{ course.register_code }}</td>
+                </tr>
+                {% endif %}
+                <tr>
+                    <th>Students</th>
+                    <td>{{ course.students.all.count }} in total, <a href="{% url 'course:students' course.pk 1 %}">View all students</a></td>
+                </tr>
+                {% if manage or assistant %}
+                <tr>
+                    <th>Rank</th>
+                    <td>{{ course.students.all.count }} in total, <a href="{% url 'course:leaderboard' course.pk %}">View students rank</a></td>
+                </tr>
+                {% endif %}
+            {% endif %}
+            </table>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12 col-md-12 col-lg-12">
+            <table class="detail-table">
+                {% if course.teaching_assistants.all %}
+                    {% if lang.code == 'zh-hans' %}
+                        <caption>课程助教</caption>
+                    {% else %}
+                        <caption>Teaching Assistants</caption>
+                    {% endif %}
+                {% endif %}
+                {% for ta in course.teaching_assistants.all %}
+                    <tr>
+                        <th>{{ ta.info.display_name }}
+                            {% if manage and ta.email %} ({{ ta.email }}) {% endif %}</th>
+                        {% if manage %}
+                            <td>
+                                <a href="{% url 'course:delete_ta' course.pk ta.pk %}">Delete</a>
+                            </td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+
+    {% if manage or assistant %}
+        {% if manage %}
+            <div class="row">
+                <div class="col-xs-12 col-md-12 col-lg-12">
+                    <table class="detail-table">
+                        {% if lang.code == 'zh-hans' %}
+                            <caption>添加助教</caption>
+                        {% else %}
+                            <caption>Add Assistant</caption>
+                        {% endif %}
+                    </table>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-md-12 col-lg-12">
+                    <form role="form" action="{% url 'course:add_ta' course.pk %}" method="POST">
+                        {% csrf_token %}
+                        <div class="input-group">
+                            <input type="email" name="email" class="form-control" placeholder="Enter new TA's email">
+                        <span class="input-group-btn">
+                            <input type="submit" value="Add" class="btn btn-default">
+                        </span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        {% endif %}
+        
+        <div class="row">
+            <div class="col-xs-12 col-md-12 col-lg-12">
+                <table class="detail-table">
+                    {% if lang.code == 'zh-hans' %}
+                        <caption>添加学生</caption>
+                    {% else %}
+                        <caption>Add Student</caption>
+                    {% endif %}
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-md-12 col-lg-12">
+                <form role="form" action="{% url 'course:add_stu' course.pk %}" method="POST">
+                    {% csrf_token %}
+                    <div class="input-group">
+                        <input type="email" name="email" class="form-control" placeholder="Enter new Student's email">
+                    <span class="input-group-btn">
+                        <input type="submit" value="Add" class="btn btn-default">
+                    </span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    {% endif %}
+        
+    {% if signed_up %}
+        <div class="row">
+            <div class="col-xs-12 col-md-12 col-lg-12">
+                <table class="info-table"  id="id-leaderboard">
+                {% if lang.code == 'zh-hans' %}
+                    <caption>课程排名</caption>
+                    <thead><tr>
+                        <th>名次</th>
+                        <th>队伍名</th>
+                        <th>成绩</th>
+                        <th>所有提交</th>
+                    </tr></thead>
+                {% else %}
+                    <caption>Course rank</caption>
+                    <thead><tr>
+                        <th>rank</th>
+                        <th>team_name</th>
+                        <th>score</th>
+                        <th>all submissions</th>
+                    </tr></thead>
+                {% endif %}
+
+                {% for team in stu_rank %}
+                    <tr id="team-{{ team.team_id }}">
+                    <td class="rank">{{ team.rank }}</td>
+                    <td><div>
+                        {% if team.single %}
+                            <a class="team-single" href="{% url 'user:user' team.leader_id %}">{{ team.leader_name }}</a>
+                        {% else %}
+                            <a target="_blank" class="team-multi">{{ team.team_name }} <span class="glyphicon glyphicon-th-list"></span></a>
+                            <ul class="team-members">
+                                {% for m in team.members %}
+                                    <li><a href="{% url 'user:user' m.id %}">{{ m.name }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div></td>
+                    <td class="score">{{ team.score|floatformat:5 }}</td>
+                    <td>{{ team.entries }}</td>
+                    </tr>
+                {% endfor %}
+                </table>
+            </div>
+        </div>  
+    {% elif course.open_navigate and not manage and not course.is_over %}
+        <div class="row">
+            <div class="col-xs-12 col-md-12 col-lg-12">
+                <table class="detail-table">
+                {% if lang.code == 'zh-hans' %}
+                    <caption>注册课程</caption>
+                {% else %}
+                    <caption>Register</caption>
+                {% endif %}
+                </table>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12 col-md-12 col-lg-12">
+                <form role="form" action="{% url 'course:signup' course.pk %}" method="POST">
+                {% csrf_token %}
+                    <div class="input-group">
+                        <input type="text" name="code" class="form-control" placeholder="This course requires register code">
+                    <span class="input-group-btn">
+                        <input type="submit" value="Sign Up" class="btn btn-default">
+                    </span>
+                    </div>
+                </form>
+            </div>
+        </div>
+     {% endif %}
+     
+    {% if manage %}
+        <div class="row">
+            <div class="col-xs-12 col-md-12 col-lg-12">
+                <div class="btn-group pull-right">
+                    {% if lang.code == 'zh-hans' %}
+                        <a class="btn btn-primary" href="{% url 'course:edit' course.pk %}">编辑信息</a>
+                    {% else %}
+                        <a class="btn btn-primary" href="{% url 'course:edit' course.pk %}">Edit Information</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>  
+    {% endif %}
+    
+    <script type="text/javascript">
+        $('.team-multi').click(function () {
+            $(this).siblings("ul").toggle()
+        });
+    </script> 
+{% endblock %}

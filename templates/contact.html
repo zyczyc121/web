@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block title %}contact{% endblock %}
+
+{% block body %}
+<style type="text/css">
+#doc-title h1 {
+    line-height: 2.625;
+    text-align: center;
+    font-size: 2.5em;
+    font-weight: normal;
+    color: #6f7073;
+}
+.doc-inside {
+    width: 750px;
+    margin: 1.5em auto 9em;
+    display: block;
+    float: none;
+}
+#doc-content p {
+    font-family: 'Open Sans',"Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 17px;
+    line-height: 1.45;
+    color: #333;
+    display: block;
+    -webkit-margin-before: 1em;
+    -webkit-margin-after: 1em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    margin: 0.75em 0;
+}
+</style>
+
+    <div id="doc-title">
+        <h1 style="text-align: center;">Contact</h1>
+    </div>
+    <div class="doc-inside">
+        <div id="doc-content">
+            <p>If you are an organization, and willing to host a data competition;</p>
+            <p>If you are a teacher, and want to use the data and competition on our platform as a course project;</p>
+            <p>If you are a data scientist, and have any questions;</p>
+            <p>Please send an email to us at <span style="color: #20beff;">support@biendata.com</span> !</p>
+        </div>
+    </div>
+
+{% endblock %}

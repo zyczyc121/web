@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block title %} Course {% endblock %}
+
+{% block body %}
+    {% if tutor_courses %}
+        {% if lang.code == 'zh-hans' %}
+            <h2 class="mt10 mb5"> 授课-课程</h2>
+        {% else %}
+            <h2 class="mt10 mb5"> My Teaching</h2>
+        {% endif %}
+        <div class="row">
+            {% for course in tutor_courses %}
+                {% include "course/components/course_info.html" with course=course %}
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {% if assistant_courses %}
+        {% if lang.code == 'zh-hans' %}
+            <h2 class="mt10 mb5"> 助教-课程</h2>
+        {% else %}
+            <h2 class="mt10 mb5"> My Assistant</h2>
+        {% endif %}
+        <div class="row">
+            {% for course in assistant_courses %}
+                {% include "course/components/course_info.html" with course=course %}
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {% if attend_courses %}
+        {% if lang.code == 'zh-hans' %}
+            <h2 class="mt10 mb5"> 学生-课程</h2>
+        {% else %}
+            <h2 class="mt10 mb5"> My Courses</h2>
+        {% endif %}
+
+        <div class="row">
+            {% for course in attend_courses %}
+                {% include "course/components/course_info.html" with course=course %}
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {% if lang.code == 'zh-hans' %}
+        <h2 class="mt10 mb5"> 所有课程</h2>
+    {% else %}
+        <h2 class="mt10 mb5">All Courses</h2>
+    {% endif %}
+
+    <div class="row">
+        {% for course in courses %}
+            {% include "course/components/course_info.html" with course=course %}
+        {% endfor %}
+    </div>
+
+    <script>
+    $("body").css({
+        "background-color": "#eee",
+        "background-image": "url('../static/img/bj.png')",
+        "background-size": "contain"
+    });
+
+    $(document).ready(function(){
+        //限制字符个数
+        $(".des_twoline").each(function(){
+            var maxwidth=90;
+            if($(this).text().length>maxwidth){
+                $(this).text($(this).text().substring(0,maxwidth));
+                $(this).html($(this).html()+'…');
+            }
+        });
+    });
+    </script>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}Activate your account {% endblock %}
+{% block body %}
+{#    A validation mail has been sent to {{ user.email }}. Click#}
+{#    <a href="{% url 'user:resend_activation_mail' activation.id %}">here</a> to send a new one.#}
+
+    <div class="pt30 text-center">
+        
+        {% if lang.code == 'zh-hans' %}
+            <h1 class="mb10">
+                你的账户还未被激活.
+            </h1>
+            <p>
+                请查看你的邮件并按照里面的指示来激活你的账户.
+            </p>
+            <p>
+                重新发了一封邮件.
+            </p>
+        {% else %}
+            <h1 class="mb10">
+                Your account hasn't been activated yet.
+            </h1>
+            <p>
+                Please check your email and follow instructions inside to activate your account.
+            </p>
+            <p>
+                We resent an email for your convenience.
+            </p>
+        {% endif %}
+
+
+    </div>
+{% endblock %}

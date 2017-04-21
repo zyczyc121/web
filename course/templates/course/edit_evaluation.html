@@ -1,0 +1,15 @@
+{% extends "course/base.html" %}
+{% load crispy_forms_tags %}
+{% block title %} Evalutaion {% endblock %}
+{% block content %}
+    <div class="row col-xs-12 col-md-12 col-lg-12"><h2>{{ assignment.title }}</h2></div>
+    {% include "course/components/create_pipeline.html" with active="evaluation" %}
+    <div class="row">
+        <div class="col-xs-12 col-md-12 col-lg-12">
+            <form class="form-horizontal" action="{{ request.path }}" method="post" enctype="multipart/form-data">
+                {% crispy form form_helper %}
+                <input type="submit" class="btn btn-primary pull-right" value="Done"/>
+            </form>
+        </div>
+    </div>
+{% endblock %}

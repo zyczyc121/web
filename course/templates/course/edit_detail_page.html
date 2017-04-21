@@ -1,0 +1,22 @@
+{% extends "course/base.html" %}
+{% load crispy_forms_tags %}
+{% block title %} Edit Detail {% endblock %}
+{% block content %}
+    {% include "course/components/create_pipeline.html" with active="detail" %}
+    <div class="row col-xs-12 col-md-12 col-lg-12"><h2>{{ assignment.title }}</h2></div>
+    <div class="row">
+        <div class="col-xs-12 col-md-12 col-lg-12">
+            <form class="form-horizontal" action="{{ request.path }}" method="post">
+                {{ form.media }}
+                {% crispy form form_helper %}
+                <div class="btn-group pull-right">
+                    <a class="btn btn-danger btn-default" href="{% url 'course:edit_detail' course.pk assignment.pk%}">Abort</a>
+                    <input type="submit" class="btn btn-primary" value="Save"/>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row col-xs-12 col-md-12 col-lg-12">
+    </div>
+
+{% endblock %}

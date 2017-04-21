@@ -1,0 +1,191 @@
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+{% load pipeline %}
+{% load i18n %}
+{% get_language_info for LANGUAGE_CODE as lang %}
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf8">
+    <link rel="icon" type="image/png" href="/static/img/favicon.png" />
+
+    <title>{% block title %}Biendata{% endblock %}</title>
+
+    <script type="application/javascript" src="{% static 'js/jquery-1.11.3.min.js' %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'bootstrap-3.3.5/css/bootstrap.min.css' %}"/>
+    <script type="application/javascript" src="{% static 'bootstrap-3.3.5/js/bootstrap.min.js' %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/re_css/style.css' %}"/>
+
+    {% stylesheet 'controls' %}
+    <link href="{% static 'css/re_css/controls.css' %}" rel="stylesheet" type="text/css" media="screen,projection">
+    <script type="application/javascript" src="{% static 'js/login.js' %}"></script>
+    <script type="application/javascript" src="{% static 'js/form.js' %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'select2/select2.css' %}"/>
+    <script type="application/javascript" src="{% static 'select2/select2.js' %}"></script>
+    <script type="application/javascript" src="{% static 'select2/select2.full.js' %}"></script>
+
+    <script src="{% static 'jquery-ui-1.11.4/jquery-ui.min.js' %}" type="application/javascript"> </script>
+    <link href="{% static 'jquery-ui-1.11.4/jquery-ui.min.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'css/re_css/common.css' %}" rel="stylesheet" type="text/css">
+</head>
+
+
+<body class='min-wrapper' style="background-color: rgb(238, 238, 238);">
+<div class=".container"  style="min-height: 1266px;">
+    <div class="row">
+        <nav class="navbar navbar-default navbar-inverse" style="border-radius:0px">
+            <div class="">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="{% url 'index' %}"><img src="{% static 'img/re_img/site-logo.png' %}"/></a>
+                        <ul class="nav navbar-nav">
+                                
+                        </ul>
+                    </div>
+
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul class="nav navbar-nav navbar-right">
+
+                            {% if lang.code == 'zh-hans' %}
+                                <li>
+                                    <form name='form_en' action="{% url 'set_language' %}" method="post">
+                                        {% csrf_token %}
+                                        <input name="language" type="hidden" value="en"/>
+                                    </form>
+                                </li>
+
+                                <li><p style="color:#fff;padding:15px 15px 15px 15px;">当前活跃参赛者数:{{ active_users }}</p></li>
+                                <li><a href='javascript:this.document.form_en.submit();'><p>English version</p></a></li>
+                                {% if user.is_authenticated %}
+                                    <li><a href="{% url 'user:profile' %}"><p>{{ user.info.display_name }}</p></a></li>
+                                    <li><a href="{% url 'user:logout' %}">
+                                        <p style="color:#01E9FB;border: 1px solid #01E9FB;border-radius: 2px;padding:0 8px 0 8px !important;line-height:24px !important">退出</p>
+                                    </a></li>
+                                {% else %}
+                                    <li><a id="id-login-btn"><p>登录</p></a></li>
+                                    <li><a href="{% url 'user:register' %}">
+                                        <p style="color:#01E9FB;border: 1px solid #01E9FB;border-radius: 2px;padding:0 8px 0 8px !important;line-height:24px !important">注册</p>
+                                    </a></li>
+                                {% endif %}
+
+                            {% else %}
+                                <li><a>
+                                    <form name='form_zh' action="{% url 'set_language' %}" method="post">
+                                        {% csrf_token %}
+                                        <input name="language" type="hidden" value="zh-hans"/>
+                                    </form>
+                                </a></li>
+
+                                <li><p style="color:#fff;padding:15px 15px 15px 15px;">active members:{{ active_users }}</p></li>
+                                <li><a href='javascript:this.document.form_zh.submit();'><p>中文版</p></a></li>
+
+                                {% if user.is_authenticated %}
+                                    <li><a href="{% url 'user:profile' %}"><p>{{ user.info.display_name }}</p></a></li>
+                                    <li><a href="{% url 'user:logout' %}">
+                                        <p style="color:#01E9FB;border: 1px solid #01E9FB;border-radius: 2px;padding:0 8px 0 8px !important;line-height:24px !important">Logout</p>
+                                    </a></li>
+                                {% else %}
+                                    <li><a id="id-login-btn"><p>Login</p></a></li>
+                                    <li><a href="{% url 'user:register' %}">
+                                        <p style="color:#01E9FB;border: 1px solid #01E9FB;border-radius: 2px;padding:0 8px 0 8px !important;line-height:24px !important">Sign Up</p>
+                                    </a></li>
+                                {% endif %}
+
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    {% if not user.is_authenticated and login_form %}
+        <div class="wrapper">
+            <div id="id-nav-login" style="display: none">
+                <form id="id-top-login-form" action="{% url 'user:login' %}" method="post">
+                    {% crispy login_form %}
+                </form>
+
+                {% if lang.code == 'zh-hans' %}
+                    <p><a href="{% url 'user:forget_password' %}">忘记密码?</a></p>
+                {% else %}
+                    <p><a href="{% url 'user:forget_password' %}">Forgot password?</a></p>
+                {% endif %}
+
+            </div>
+        </div>
+    {% endif %}
+    {% if messages %}
+        <ul class="message-list">
+            {% for message in messages %}
+                <li{% if message.tags %} class="message-{{ message.tags }}"{% endif %}>
+                    <div class="wrapper">{{ message }}</div>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <div class="row">
+        <div class="">
+            {% block body %} BODY {% endblock %}
+        </div>
+    </div>
+</div>
+
+<ol class="breadcrumb text-center" style="z-index: 0; position: absolute; bottom: 0px; width: 100%;margin-top:0;background:#192337;height:60px;padding-top:20px;">
+    {% if lang.code == 'zh-hans' %}
+        <li><a class="text-capitalize" href="{% url 'about' %}">关于</a></li>
+        <li><a class="text-capitalize" href="{% url 'terms' %}">条款</a></li>
+        <li><a class="text-capitalize" href="{% url 'privacy' %}">隐私</a></li>
+        <li><a class="text-capitalize" href="{% url 'contact' %}">联系</a></li>
+    {% else %}
+        <li><a class="text-capitalize" href="{% url 'about' %}">About</a></li>
+        <li><a class="text-capitalize" href="{% url 'terms' %}">Terms</a></li>
+        <li><a class="text-capitalize" href="{% url 'privacy' %}">Privacy</a></li>
+        <li><a class="text-capitalize" href="{% url 'contact' %}">Contact</a></li>
+    {% endif %}
+</ol>
+
+<script>
+    var time;
+
+
+    function res(){
+        if($(document.body).height()<$(window).height()){
+            $("body>div").css("min-height",$(window).height()-$(".breadcrumb").height()+"px");
+            $(".breadcrumb").css({
+                "position": "absolute",
+                "bottom": "0",
+                "width": "100%"
+            });
+//                time = setInterval("res()",30);
+        }
+        else{
+//                $("body>div>div").css("min-height",$(document.body).height()+"px");
+            $(".breadcrumb").css({
+                "position": "relative",
+                "bottom": "auto",
+                "width": "auto"
+            });
+
+//                clearInterval(time);
+        }
+    };
+
+    res();
+
+    $(window).resize(function(){
+        res();
+    });
+
+</script>
+</body>
+</html>
+

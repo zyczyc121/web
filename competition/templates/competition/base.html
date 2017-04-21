@@ -1,0 +1,213 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block title %}contact{% endblock %}
+
+{% block body %}
+<div class='index min-wrapper'>
+    <div class="row">
+        <div style="background-color: #fff;">
+            <div class="row banner wrapper"
+                 {% if competition.banner %}
+                 style="background: url({{ MEDIA_URL }}{{ competition.banner }});background-size:cover;"
+                 {% endif %}
+            >
+                <div class="col-md-3 col-sm-3 col-xs-4 competition-logo">
+                    {% if competition.logo %}
+                        <img src="{{ MEDIA_URL }}{{ competition.logo }}"/ style="height:200px;margin:0px">
+                    {% endif %}    
+                </div>
+                <div class="col-md-9 col-sm-9 col-xs-8 competition-info pt50">
+                    {% if lang.code == 'zh-hans' %}
+                        <div class="row header">
+                            {% if competition.sponsor %}
+                                <span>{{ competition.sponsor }}</span> •
+                            {% endif %}
+                            {% if competition.award %}
+                                <span>{{ competition.award }}</span> •
+                            {% endif %}
+                            {% if competition.uid == 'kddcup2015' %}
+                                <span>821 支参赛队伍</span>
+                            {% else %}
+                                <span>{{ competition.teams.count }} 支参赛队伍</span>
+                            {% endif %}
+        
+                        </div>
+                        <div class="row title pt10">
+                            {{ competition.name }}
+                        </div>
+                    {% else %}
+                        <div class="row header">
+                            {% if competition.sponsor_en %}
+                                <span>{{ competition.sponsor_en }}</span> •
+                            {% endif %}
+                            {% if competition.award %}
+                                <span>{{ competition.award }}</span> •
+                            {% endif %}
+                            {% if competition.uid == 'kddcup2015' %}
+                                <span>821 Teams</span>
+                            {% else %}
+                                <span>{{ competition.teams.count }} Team{{ competition.teams.count|pluralize }}</span>
+                            {% endif %}
+        
+                        </div>
+                        <div class="row title pt10">
+                            {{ competition.name_en }}
+                        </div>
+                    {% endif %}   
+ 
+                    <div class="row pt15">
+                        <div id="comp-header-stat">
+                            <div id="comp-progress">
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-info" id="comp-going" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
+                  
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="comp-header-start">
+                                {{ competition.start_datetime|date:'Y-m-d' }}
+                            </div>
+                            <div id="comp-milestone-end">
+                                {% if lang.code == 'zh-hans' %}
+                                    最终提交
+                                {% else %}
+                                    Final Submissions
+                                {% endif %}
+                            </div>
+                            <div id="comp-header-end">
+                                {{ competition.end_datetime|date:'Y-m-d' }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <!-- 当前位置 -->
+        <div class="wrapper" style="padding: 15px 10px;font-size: 15px;">
+            <img src="{% static 'img/re_img/home-1.png' %}" alt="" style="width: 12px;margin: -3px 3px 0 0;">
+            <a href="{% url 'index' %}"><span style="color: #4A4A4A">{% if lang.code == 'zh-hans' %}主页{% else %}Home{% endif %}</span></a>
+            <span>&nbsp;&nbsp;>&nbsp;</span>
+            <a href="{% url 'competition:main' %}"><span style="color: #4A4A4A">{% if lang.code == 'zh-hans' %}比赛{% else %}Competitions{% endif %}</span></a>
+            <span>&nbsp;&nbsp;>&nbsp;</span>
+            <span>{% if lang.code == 'zh-hans' %}{{ competition.name }}{% else %}{{ competition.name_ene }}{% endif %}</span>
+        </div>
+    
+        <div class="wrapper" style="padding: 0 10px;margin-bottom: 40px;">
+            <div class="row">
+                <div class="col-xs-2 p0" id="myScrollspy" style="width: 17.8%">
+                    <ul class="nav nav-tabs nav-stacked" style="width:100%; margin-top:0px">
+                        {% if lang.code == 'zh-hans' %}
+                            <li><span>介绍</span></li>
+                            <li id="intro" class="active"><a href="{% url 'competition:index' competition.uid %}"><span></span>简介</a></li>
+                            <li id="rules"><a href="{% url 'competition:rules' competition.uid %}"><span></span>规则</a></li>
+                            <li id="data"><a href="{% url 'competition:data' competition.uid %}"><span></span>数据</a></li>
+                            {% for detail in competition.detail_set.all %}
+                                <li id="{{ detail.slug }}"><a href="{% url 'competition:detail' competition.uid detail.slug %}"><span></span>{{ detail.title }}</a></li>
+                            {% endfor %}
+    
+                            <li><span>提交</span></li>
+                            <li id="make-submission"><a href="{% url 'competition:make_submission' competition.uid %}"><span></span>验证提交</a></li>
+                            {% if is_final_submit %}
+                                <li id="final-submission"><a href="{% url 'competition:final_submission' competition.uid %}"><span></span>最终提交</a></li>
+                            {% endif %}
+                            <li id="my-submission"><a href="{% url 'competition:my_submission' competition.uid %}"><span></span>我的提交</a></li>
+    
+                            <li><span>其他</span></li>
+                            <li id="my_team"><a href="{% url 'competition:my_team' competition.uid %}"><span></span>我的队伍</a></li>
+                            <li id="leaderboard"><a href="{% url 'competition:leaderboard' competition.uid %}"><span></span>排行榜</a></li>
+                            {% if is_final %}
+                                <li id="final-leaderboard"><a href="{% url 'competition:final_leaderboard' competition.uid %}"><span></span>最终得分</a></li>
+                            {% endif %}
+                            {% if is_showwinners %}
+                                <li id="winners"><a href="{% url 'competition:winners' competition.uid %}"><span></span>获奖名单</a></li>
+                            {% endif %}
+
+                            <li><span>&nbsp;</span></li>
+                        {% else %}
+                            <li><span>Information</span></li>
+                            <li id="intro" class="active"><a href="{% url 'competition:index' competition.uid %}"><span></span>Introduction</a></li>
+                            <li id="rules"><a href="{% url 'competition:rules' competition.uid %}"><span></span>Rules</a></li>
+                            <li id="data"><a href="{% url 'competition:data' competition.uid %}"><span></span>Data</a></li>
+                            {% for detail in competition.detail_set.all %}
+                                <li id="{{ detail.slug }}"><a href="{% url 'competition:detail' competition.uid detail.slug %}"><span></span>{{ detail.title_en }}</a></li>
+                            {% endfor %}
+    
+                            <li><span>Submission</span></li>
+                            <li id="make-submission"><a href="{% url 'competition:make_submission' competition.uid %}"><span></span>Make a submission</a></li>
+                            {% if is_final_submit %}
+                                <li id="final-submission"><a href="{% url 'competition:final_submission' competition.uid %}"><span></span>Make a final submission</a></li>
+                            {% endif %}
+                            <li id="my-submission"><a href="{% url 'competition:my_submission' competition.uid %}"><span></span>My submissions</a></li>
+    
+                            <li><span>Others</span></li>
+                            <li id="my_team"><a href="{% url 'competition:my_team' competition.uid %}"><span></span>My Team</a></li>
+                            <li id="leaderboard"><a href="{% url 'competition:leaderboard' competition.uid %}"><span></span>Leaderboard</a></li>
+                            {% if is_final %}
+                                <li id="final-leaderboard"><a href="{% url 'competition:final_leaderboard' competition.uid %}"><span></span>Final Leaderboard</a></li>
+                            {% endif %}
+                            {% if is_showwinners %}
+                                <li id="winners"><a href="{% url 'competition:winners' competition.uid %}"><span></span>Winners list</a></li>
+                            {% endif %}
+
+                            <li><span>&nbsp;</span></li>
+                        {% endif %}
+
+                    </ul>
+                </div>
+
+                <div class="col-xs-10" style="background-color: #fff;padding: 50px;min-height: 800px;width: 74.6%;margin-left:3.8%;margin-bottom:60px;padding-top: 10px;">
+                    <!--<div class="col-md-9">-->
+                    <div id="myTabContent" class="tab-content">
+                        {% block content %}
+
+                        {% endblock %}
+                    </div>
+                </div>    
+ 
+            </div>
+        </div>
+    
+    </div>
+</div>
+    <script>
+        var arr = new Array()
+        arr = window.location.href.split('{{ competition.uid }}/');
+        var link = arr[1]
+        if(link == '') {
+            $('#myScrollspy>ul>li').removeClass('active');
+            $('#intro').addClass('active');
+        } else if (link.indexOf("team") == 0) {
+            $('#myScrollspy>ul>li').removeClass('active');
+            $('#my_team').addClass('active');
+        } else if (link.indexOf("leaderboard") == 0) {
+            $('#myScrollspy>ul>li').removeClass('active');
+            $('#leaderboard').addClass('active');
+        } else {
+            $('#myScrollspy>ul>li').removeClass('active');
+            $('#'+link.replace('/','')).addClass('active');
+        }
+
+        $(function(){
+            var final_ratio = 0.9;
+            var st = {{ competition.start_datetime|date:'U' }};
+            var final = {{ competition.final_submit_datetime|date:'U' }};
+            var ed = {{ competition.end_datetime|date:'U' }};
+            var now = {% now 'U' %};
+
+            var ratio = 0;
+            if(now<st){
+                ratio = 0;
+            } else if (now<=final){
+                ratio = final_ratio * (now-st)/(final-st);
+            } else if (now<=ed){
+                ratio = final_ratio + (1-final_ratio)*(now-final)/(ed-final)
+            } else {
+                ratio = 1
+            }
+
+            $("#comp-going").css("width", ratio*100 +"%");
+        });
+    </script>
+{% endblock %}

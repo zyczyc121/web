@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block title %} Title {% endblock %}
+
+{% block body %}
+    <div class="pt25 wrapper block_wrap row mt10">
+        {% include "course/components/course_sidebar.html" with courses=all_courses %}
+
+        <div class="col-xs-12 col-sm-9 col-md-8">
+            <p class="visible-xs">
+                <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
+            </p>
+            {% block content %}
+                CONTENT
+            {% endblock %}
+        </div>
+    </div>
+{% endblock %}

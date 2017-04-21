@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block title %}terms{% endblock %}
+
+{% block body %}
+<style type="text/css">
+#doc-title h1 {
+    line-height: 2.625;
+    text-align: center;
+    font-size: 2.5em;
+    font-weight: normal;
+    color: #6f7073;
+}
+.doc-inside {
+    width: 940px;
+    margin: 1.5em auto 9em;
+    display: block;
+    float: none;
+}
+#doc-content p {
+    font-family: 'Open Sans',"Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 17px;
+    line-height: 1.45;
+    color: #333;
+    display: block;
+    -webkit-margin-before: 1em;
+    -webkit-margin-after: 1em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    margin: 0.75em 0;
+}
+</style>
+
+    <div id="doc-title">
+        <h1 style="text-align: center;">Terms</h1>
+    </div>
+    <div class="doc-inside">
+        <div id="doc-content">
+            <p>As a competition platform, we strictly enforce following policies, and request all users and participants follow the rules.</p>
+            <h3 style="font-size: 18px;font-weight: bold;">One person, one account</h3>
+            <p>Each person shall only have one account. If you want to change your email or other information, 
+                please modify the existed account or contact us directly instead of registering a new one.</p>
+            <h3 style="font-size: 18px;font-weight: bold;">Limitation on submission per day</h3>
+            <p>Each competition defines the maximum submissions per day. The limitation should be strictly followed. You cannot register 
+                multiple accounts to bypass the limitation.</p>
+            <h3 style="font-size: 18px;font-weight: bold;">Integrity</h3>
+            <p>Dishonesty acts include misusage of data and obtain submissions or prizes fraudulently. All users shall not try, by any mean,
+                to obtain the answer or private training data of any competition. If the rule of one competition </p>
+        </div>
+    </div>
+
+{% endblock %}

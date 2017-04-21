@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load pybb_tags i18n %}
+
+{% block title %}{{ forum.name }}{% endblock title %}
+
+{% block body %}
+<div class="bbs min-wrapper">
+    <div style="background-color: #000;">
+        <div id="myCarousel" class="wrapper carousel slide">
+            <!-- 轮播（Carousel）项目 -->
+            <div class="carousel-inner">
+                <div class="item active">
+                    <img src="{% static 'img/re_img/banner_forum.png' %}" alt="First slide" style="width: 100%">
+                    <div class="carousel-caption">
+                        <h2 style="border: none;">
+                            {% trans "Forum" %}
+                        </h2>
+                        <p>{% trans "Mining all about the biendata" %}</p>
+                        <br/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="" style="background-color: #fff;min-height: 1000px;padding: 20px 0;margin-top:10px;margin-bottom: 40px;">
+        <!-- 当前位置 -->
+        <div class="wrapper" style="padding: 15px 10px;font-size: 15px;">
+            <img src="{% static 'img/re_img/home-1.png' %}" alt="" style="width: 12px;margin: -3px 3px 0 0;">
+            <a href="{% url 'index' %}"><span style="color: #4A4A4A"><span>{% trans "Home" %}</span></a>
+            <span>&nbsp;&nbsp;>&nbsp;</span>
+            <a href="{% url 'pybb:index' %}"><span style="color: #4A4A4A">{% trans "Forum" %}</span></a>
+            <span>&nbsp;&nbsp;>&nbsp;</span>
+            <span>{{ forum.name }}</span>
+        </div>  
+        <div class="wrapper search">
+            <div class="title">
+                <p>{{ forum.name }}</p>
+                {% if user.is_authenticated %}
+                <div class="tag" style="position: absolute;right: 10px;top: 0;">
+                    <ul class="option" style="padding: 10px 0;">
+                        <li>{% include "pybb/_button_new_topic.html" %}</li>
+                    </ul>
+                </div>
+                {% endif %}
+            </div>
+            {% include 'pybb/forum_list.html' with forum_list=forum.forums_accessed category='' parent_forum=forum %}        
+            {% include "pybb/topic_list.html" %}    
+            {% include "pybb/pagination.html" %}
+    </div>
+</div>
+{% endblock%}
+

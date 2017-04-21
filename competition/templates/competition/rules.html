@@ -1,0 +1,50 @@
+{% extends 'competition/base.html'%}
+
+{% block title %} Rules {% endblock %}
+{% block content %}
+
+    {% if lang.code == 'zh-hans' %}
+        {% if not has_accepted %}
+        <form role="form" class="mb25" action="{% url 'competition:accept_rules' competition.uid %}" method="post">
+            {% csrf_token %}
+            <div class="text-center">
+                {% if next_url %}
+                    <input type="hidden" name="next_url" value="{{ next_url }}" />
+                {% endif %}
+            </div>
+            <div id="id-rule-acceptance-div">
+                <h3>接受</h3>
+                <input type="submit" name="accept" class="btn btn-primary"
+                    role="button" value="接受并加入比赛"/>
+                <a href="{% url 'competition:index' competition.uid %}" class="btn btn-default">拒绝</a>
+            </div>
+        </form>
+        {% endif %}
+        <div>
+            {{ competition.rules|safe }}
+        </div>
+    {% else %}
+
+        {% if not has_accepted %}
+        <form role="form" class="mb25" action="{% url 'competition:accept_rules' competition.uid %}" method="post">
+            {% csrf_token %}
+            <div class="text-center">
+                {% if next_url %}
+                    <input type="hidden" name="next_url" value="{{ next_url }}" />
+                {% endif %}
+            </div>
+            <div id="id-rule-acceptance-div">
+                <h3>Rule Acceptance</h3>
+                <input type="submit" name="accept" class="btn btn-primary"
+                   role="button" value="Accept and join competition"/>
+                <a href="{% url 'competition:index' competition.uid %}" class="btn btn-default">Decline</a>
+            </div>
+        </form>
+        {% endif %}
+
+        <div>
+            {{ competition.rules_en|safe }}
+        </div>
+    {% endif %}
+
+{% endblock %}

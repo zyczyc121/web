@@ -1,0 +1,235 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block title %}Competition - {{ competition.name }}{% endblock %}
+
+{% block body %}
+
+        <div class="row banner"
+            {% if competition.banner %}
+            style="background: url({{ MEDIA_URL }}{{ competition.banner }});background-size:cover;"
+            {% endif %}
+        >
+        <div class="col-md-3 col-sm-3 col-xs-4 competition-logo">
+            {% if competition.logo %}
+                <img src="{{ MEDIA_URL }}{{ competition.logo }}"/>
+            {% else %}
+                <img src="{% static 'img/thumb.png' %}"/>
+            {% endif %}
+        </div>
+        <div class="col-md-9 col-sm-9 col-xs-8 competition-info pt35">
+
+            {% if lang.code == 'zh-hans' %}
+                <div class="row header">
+                    <span>{{ competition.sponsor }}</span> •
+                    <span>{{ competition.award }}</span> •
+                    {% if competition.uid == 'kddcup2015' %}
+                        <span>821 支参赛队伍</span>
+                    {% else %}
+                        <span>{{ competition.teams.count }} 支参赛队伍</span>
+                    {% endif %}
+                </div>
+                <div class="row title pt10">
+                    {{ competition.name }}
+                </div>
+            {% else %}
+                <div class="row header">
+                    <span>{{ competition.sponsor }}</span> •
+                    <span>{{ competition.award }}</span> •
+                    {% if competition.uid == 'kddcup2015' %}
+                        <span>821 Teams</span>
+                    {% else %}
+                        <span>{{ competition.teams.count }} Team{{ competition.teams.count|pluralize }}</span>
+                    {% endif %}
+                </div>
+                <div class="row title pt10">
+                    {{ competition.name_en }}
+                </div>
+            {% endif %}
+
+            <div class="row pt10">
+                <div id="comp-header-stat">
+                    <div id="comp-progress">
+                        <div id="comp-progress-full">
+                            <div id="comp-progress-going"></div>
+                        </div>
+                        <div id="comp-progress-start"></div>
+                        <div class="comp-progress-milestone">
+                            <div class="circle"></div>
+                            <div class="milestone-key">
+                                {% if lang.code == 'zh-hans' %}
+                                    最终提交
+                                {% else %}
+                                    Final Submissions
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div id="comp-progress-end"></div>
+                    </div>
+                    <div id="comp-header-start" style="color:#000000">
+                        {{ competition.start_datetime|date:'Y-m-d' }}
+                    </div>
+                    <div id="comp-header-end" style="color:#000000">
+                        {{ competition.end_datetime|date:'Y-m-d' }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row pt15">
+        <div class="row row-offcanvas row-offcanvas-left">
+            <div class="col-xs-6 col-sm-3 col-md-3 sidebar-offcanvas" id="sidebar" style="z-index: 1;">
+                <!--<div class="col-md-3 sidebar">-->
+                <div class="panel panel-default">
+                
+                    {% if lang.code == 'zh-hans' %}
+                        <div class="panel-heading">介绍</div>
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <a href="{% url 'competition:index' competition.uid %}">简介</a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="{% url 'competition:rules' competition.uid %}">规则</a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="{% url 'competition:data' competition.uid %}">数据</a>
+                            </li>
+                            {% for detail in competition.detail_set.all %}
+                                <li class="list-group-item">
+                                    <a href="{% url 'competition:detail' competition.uid detail.slug %}">{{ detail.title }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+
+                        <div class="panel-heading">提交</div>
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <a href="{% url 'competition:make_submission' competition.uid %}">验证提交</a>
+                            </li>
+                            {% if is_final_submit %}
+                                <li class="list-group-item">
+                                    <a href="{% url 'competition:final_submission' competition.uid %}">最终提交</a>
+                                </li>
+                            {% endif %}
+                            <li class="list-group-item">
+                                <a href="{% url 'competition:my_submission' competition.uid %}">我的提交</a>
+                            </li>
+                        </ul>
+
+                        <div class="panel-heading">其他</div>
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <a href="{% url 'competition:my_team' competition.uid %}">我的队伍</a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="{% url 'competition:leaderboard' competition.uid %}">排行榜</a>
+                            </li>
+                            {% if is_final %}
+                                <li class="list-group-item">
+                                    <a href="{% url 'competition:final_leaderboard' competition.uid %}">最终得分</a>
+                                </li>
+                            {% endif %}
+                            {% if is_showwinners %}
+                                <li class="list-group-item">
+                                    <a href="{% url 'competition:winners' competition.uid %}">获奖名单</a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    {% else %}
+                        <div class="panel-heading">Information</div>
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <a href="{% url 'competition:index' competition.uid %}">Introduction</a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="{% url 'competition:rules' competition.uid %}">Rules</a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="{% url 'competition:data' competition.uid %}">Data</a>
+                            </li>
+                            {% for detail in competition.detail_set.all %}
+                                <li class="list-group-item">
+                                    <a href="{% url 'competition:detail' competition.uid detail.slug %}">{{ detail.title_en }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+
+                        <div class="panel-heading">Submission</div>
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <a href="{% url 'competition:make_submission' competition.uid %}">Make a submission</a>
+                            </li>
+                            {% if is_final_submit %}
+                                <li class="list-group-item">
+                                    <a href="{% url 'competition:final_submission' competition.uid %}">Make a final submission</a>
+                                </li>
+                            {% endif %}
+                            <li class="list-group-item">
+                                <a href="{% url 'competition:my_submission' competition.uid %}">My Submissions</a>
+                            </li>
+                        </ul>
+
+                        <div class="panel-heading">Others</div>
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <a href="{% url 'competition:my_team' competition.uid %}">My Team</a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="{% url 'competition:leaderboard' competition.uid %}">Leaderboard</a>
+                            </li>
+                            {% if is_final %}
+                                <li class="list-group-item">
+                                    <a href="{% url 'competition:final_leaderboard' competition.uid %}">Final Leaderboard</a>
+                                </li>
+                            {% endif %}
+                            {% if is_showwinners %}
+                                <li class="list-group-item">
+                                    <a href="{% url 'competition:winners' competition.uid %}">Winners</a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    {% endif %}
+
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-9 col-md-9">
+                <p class=" visible-xs">
+                    <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
+                </p>
+                <!--<div class="col-md-9">-->
+                {% block content %}
+
+                {% if lang.code == 'zh-hans' %}
+                    你好
+                {% else %}
+                    HELLO
+                {% endif %}  
+
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+    <script>
+        $(function(){
+            var final_ratio = 0.9;
+            var st = {{ competition.start_datetime|date:'U' }};
+            var final = {{ competition.final_submit_datetime|date:'U' }};
+            var ed = {{ competition.end_datetime|date:'U' }};
+            var now = {% now 'U' %};
+
+            var ratio = 0;
+            if(now<st){
+                ratio = 0;
+            } else if (now<=final){
+                ratio = final_ratio * (now-st)/(final-st);
+            } else if (now<=ed){
+                ratio = final_ratio + (1-final_ratio)*(now-final)/(ed-final)
+            } else {
+                ratio = 1
+            }
+
+            $("#comp-progress-going").css("width", ratio*100 +"%");
+        });
+    </script>
+{% endblock %}

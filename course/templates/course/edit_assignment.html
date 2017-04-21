@@ -1,0 +1,46 @@
+{% extends "course/base.html" %}
+{% load crispy_forms_tags %}
+{% load staticfiles %}
+{% block title %} Create New Assignment {% endblock %}
+{% block content %}
+    {% if assignment %}
+        <div class="row col-xs-12 col-md-12 col-lg-12"><h2>{{ assignment.title }}</h2></div>
+        {% include "course/components/create_pipeline.html" with active="basic" %}
+    {% else %}
+        <div class="row">
+            <div class="col-xs-12 col-md-12 col-lg-12">
+            <h2>{{ course.name }} - New Assignment</h2>
+            </div>
+        </div>
+    {% endif %}
+    <div class="row">
+        <div class="col-xs-12 col-md-12 col-lg-12">
+            <form class="form-horizontal" action="{{ request.path }}" method="post" enctype="multipart/form-data">
+                {% crispy form form_helper %}
+                <input type="submit" class="btn btn-primary pull-right" value="Next"/>
+            </form>
+        </div>
+    </div>
+    <script>
+        $(function(){
+            $("#id_start_datetime").datepicker({
+                defaultDate: "+1w",
+                changeMonth: true,
+                numberOfMonths: 1,
+                onClose: function( selectedDate ) {
+                   $( "#id_end_datetime" ).datepicker( "option", "minDate", selectedDate );
+                }
+            })
+
+            $( "#id_end_datetime" ).datepicker({
+                defaultDate: "+1w",
+                changeMonth: true,
+                numberOfMonths: 1,
+                onClose: function( selectedDate ) {
+                    $( "#id_start_datetime" ).datepicker( "option", "maxDate", selectedDate );
+                }
+            });
+        });
+
+    </script>
+{% endblock %}

@@ -1,0 +1,206 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-09-25 21:09+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: forms.py:55
+msgid "Sign Up"
+msgstr "注册"
+
+#: forms.py:64 forms.py:224
+msgid "Password doesn't match!"
+msgstr "密码错误！"
+
+#: forms.py:70
+msgid "Username has been used!"
+msgstr "该用户名已被使用"
+
+#: forms.py:72
+msgid "Email address has been used!"
+msgstr "该邮箱已被使用"
+
+#: forms.py:90
+msgid "Login"
+msgstr "登陆"
+
+#: forms.py:115
+msgid "Organization"
+msgstr "所属单位"
+
+#: forms.py:116
+msgid "Name of your school department, company, or something else"
+msgstr "所属单位名称，学校院系或者公司等"
+
+#: forms.py:119
+msgid "Bio"
+msgstr "个人简历"
+
+#: forms.py:120
+msgid "Enter personal tagline here"
+msgstr "输入你的个人标签"
+
+#: forms.py:121
+msgid "Bio here"
+msgstr "个人简历"
+
+#: forms.py:124
+msgid "Location"
+msgstr "所在地"
+
+#: forms.py:125
+msgid "City of residence"
+msgstr "所在城市"
+
+#: forms.py:126
+msgid "State/Province"
+msgstr "州/省份"
+
+#: forms.py:127
+msgid "Country of residence"
+msgstr "所在国家"
+
+#: forms.py:130
+msgid "Social"
+msgstr "社交"
+
+#: forms.py:131
+msgid "Your github account"
+msgstr "github账户"
+
+#: forms.py:132
+msgid "Your linkedin profile url"
+msgstr "linkedin账户链接"
+
+#: forms.py:133
+msgid "Your twitter account"
+msgstr "twitter账户"
+
+#: forms.py:136
+msgid "Skills(Required)"
+msgstr "技能（必填）"
+
+#: forms.py:138
+msgid "Machine learning techniques you are familiar with. Split with ','"
+msgstr "常用算法或技能，用','分隔"
+
+#: forms.py:139
+msgid "Tools you are familiar with. Split with ','"
+msgstr "常用语言及工具，用','分隔"
+
+#: forms.py:143
+msgid "Save changes"
+msgstr "保存修改"
+
+#: forms.py:164
+msgid "Activate"
+msgstr "激活"
+
+#: forms.py:184
+msgid "The email address used in registration"
+msgstr "该邮箱已注册"
+
+#: forms.py:187
+msgid "Reset Password"
+msgstr "重置密码"
+
+#: forms.py:209
+msgid "New password"
+msgstr "新密码"
+
+#: forms.py:210
+msgid "Type new password again"
+msgstr "再次输入新密码"
+
+#: forms.py:214
+msgid "Reset"
+msgstr "重置"
+
+#: util.py:37 util.py:42
+msgid "Unknown error"
+msgstr "未知错误"
+
+#: util.py:39
+msgid "Email doesn't exist"
+msgstr "邮箱不存在"
+
+#: util.py:47
+msgid "Reset your password"
+msgstr "重置你的密码"
+
+#: util.py:48
+msgid "Click following link to reset your password:\n"
+msgstr "点击以下链接来重置你的密码:\n"
+
+#: util.py:53
+msgid "Activate your account"
+msgstr "激活你的账户"
+
+#: util.py:58
+msgid "Visit following link to activate your account. \n"
+msgstr "访问以下链接来激活你的账户. \n"
+
+#: util.py:59
+msgid "Click"
+msgstr "点击"
+
+#: util.py:59
+msgid "to activate your account. If the link doesn't work, "
+msgstr "来激活你的账户。如果链接无效, "
+
+#: util.py:59
+msgid "please copy the following address to your browser. %s"
+msgstr "请复制以下地址到你的导航栏.%s"
+
+#: util.py:69
+msgid "User Unknown"
+msgstr "未知用户"
+
+#: util.py:73
+msgid "Update"
+msgstr "更新"
+
+#: util.py:74
+msgid "Account update"
+msgstr "账户更新"
+
+#: util.py:82
+msgid "Plain text"
+msgstr "纯文本"
+
+#: views.py:86
+msgid "Activation complete! You can login now."
+msgstr "激活完成！你现在可以登录."
+
+#: views.py:127
+msgid "Invalid username/email or password"
+msgstr "无效的用户名/邮箱或密码"
+
+#: views.py:221
+msgid "A password reset message has been sent to "
+msgstr "密码重置消息已经发送至"
+
+#: views.py:225
+msgid "Sorry. This email address hasn't been registered."
+msgstr "抱歉。该邮箱未注册"
+
+#: views.py:228
+msgid "An error occur when sending reset mail"
+msgstr "发送重置邮件时出现错误"
+
+#: views.py:253
+msgid "Password has been reset"
+msgstr "密码已被重置"

@@ -1,0 +1,91 @@
+.container-thin {
+  max-width: 600px;
+  margin: 100px auto;
+  h1, h3, p {
+    text-align: center;
+  }
+}
+
+h3 {
+  font-size: 30px;
+  margin-bottom: 0.75em;
+}
+p {
+  font-size: 1em;
+  margin-bottom: 0.8em;
+  margin-bottom: 0.8em;
+}
+
+@msg-height: 100px;
+ul.message-list {
+  padding-left: 0;
+  list-style: none;
+  font-size: 24px;
+  font-weight: normal;
+  text-align: left;
+  margin: 0;
+  li {
+    height: @msg-height;
+  }
+
+  div.wrapper {
+    height: @msg-height;
+    line-height: @msg-height;
+  }
+
+  .message-error {
+    background-color: #ef877f;
+  }
+  .message-success {
+    background-color: #baf9e6;
+  }
+  .message-info {
+    background-color: #def6ff;
+  }
+}
+
+.thumbnail {
+  a > img {
+    margin-left: auto;
+    margin-right: auto;
+    height: 90px;
+    width: 90px;
+  }
+  //description-text
+  .des_text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  height: 200px;
+}
+
+
+.breadcrumb {
+  margin-top: 20px;
+}
+
+.userinfo-header {
+  span.personal_tag {
+    font-size: 16px;
+    margin-left: 10px;
+    text-wrap: normal;
+  }
+  span.display_name {
+    font-size: 36px;
+    font-weight: bold;
+  }
+}
+.competition-info {
+  font-family: 'Open Sans',"Helvetica Neue",Helvetica,Arial,sans-serif;
+  .header {
+    font-size: 0.9em;
+    font-weight: 600;
+    color: #80b4c7;
+  }
+  .title{
+    font-size: 30px;
+    font-weight: bold;
+  }
+}

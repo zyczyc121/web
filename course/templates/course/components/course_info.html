@@ -1,0 +1,48 @@
+<div class="col-sm-6 col-md-6 col-xs-6 mb15">
+    <div class="thumbnail row">
+        <div class="col-sm-4 col-md-4 mt10 mb10">
+            {% if course.logo %}
+            <a href="{% url 'course:view' course.pk %}">
+            <img src="{{ MEDIA_URL }}{{ course.logo }}" style="width:120px; height:120px">
+            </a>
+            {% endif %}
+        </div>
+        <div class="caption col-sm-8 col-md-8">
+        {% if lang.code == 'zh-hans' %}
+            <h6 class="row">
+                <a class="col-xs-11 des_text p0" href="{% url 'course:view' course.pk %}">{{ course.name }}</a>
+            </h6>
+            <small title="{{ course.description }}" class="des_twoline">{{ course.description }}</small>
+            <div class="mt5">
+                <dl>
+                    <dt>授课老师:</dt>
+                    <dd>{{ course.tutor_name }}</dd>
+                    <dt>所属院校:</dt>
+                    <dd>{{ course.school }}</dd>
+                    <dt>开始时间:</dt>
+                    <dd>{{ course.start_datetime }}</dd>
+                    <dt>结束时间:</dt>
+                    <dd>{{ course.end_datetime }}</dd>
+                </dl>
+            </div>
+        {% else %}
+            <h6 class="row">
+                <a class="col-xs-11 des_text p0" href="{% url 'course:view' course.pk %}">{{ course.name_en }}</a>
+            </h6>
+            <small title="{{ course.description }}" class="des_twoline">{{ course.description_en }}</small>
+            <div class="mt5">
+                <dl>
+                    <dt>Tutor:</dt>
+                    <dd>{{ course.tutor_name }}</dd>
+                    <dt>School:</dt>
+                    <dd>{{ course.school_en }}</dd>
+                    <dt>Start:</dt>
+                    <dd>{{ course.start_datetime }}</dd>
+                    <dt>End:</dt>
+                    <dd>{{ course.end_datetime }}</dd>
+                </dl>
+            </div>
+        {% endif %}
+        </div>
+    </div>
+</div>

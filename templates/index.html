@@ -1,0 +1,337 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block title %}biendata{% endblock %}
+{% load i18n %}
+{% get_language_info for LANGUAGE_CODE as lang %}
+
+{% block body %}
+
+    <div class='index min-wrapper' style="background-color: #000;">
+        <div id="myCarousel" class="wrapper carousel slide">
+            <!-- 轮播（Carousel）指标 -->
+            <ol class="carousel-indicators">
+                <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                <li data-target="#myCarousel" data-slide-to="1"></li>
+                <li data-target="#myCarousel" data-slide-to="2"></li>
+            </ol>
+            <!-- 轮播（Carousel）项目 -->
+            <div class="carousel-inner">
+                <div class="item active">
+                    <a href="/competition/luckydata/">
+                        <img src="{% static 'img/re_img/sohu_main.png' %}" alt="First slide" style="width: 100%;height:300px">
+                    </a>
+                </div>
+                <div class="item">
+                    <a href="/competition/bytecup2016/">
+                        <img src="{% static 'img/re_img/banner_main.png' %}" alt="First slide" style="width: 100%">
+                        <div class="carousel-caption">
+                            <h2>2016 BYTECUP</h2>
+                            <br/>
+                            <div>
+                                {% if lang.code == 'zh-hans' %}
+                                    <span>2016 Byte Cup国际机器学习竞赛</span>
+                                {% else %}
+                                    <span>2016 BYTECUP International Machine Learning Competition</span>
+                                {% endif %}
+                                <span>$10,000</span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="item">
+                    <a href="/competition/smpcup2016/">
+                        <img src="{% static 'img/re_img/banner-1.png' %}" alt="Second slide" style="width: 100%">
+                        <div class="carousel-caption">
+                            <h2>2016 SMPCUP</h2>
+                            <br/>
+                            <div>
+                                {% if lang.code == 'zh-hans' %}
+                                    <span>2016 Smp Cup微博用户画像</span>
+                                {% else %}
+                                    <span>2016 SMPCUP</span>
+                                {% endif %}
+                                <span>¥20,000</span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <!-- 轮播（Carousel）导航 -->
+            <a class="carousel-control left" href="#myCarousel" data-slide="prev"></a>
+            <a class="carousel-control right" href="#myCarousel" data-slide="next"></a>
+        </div>
+    </div>
+
+    {% if lang.code == 'zh-hans' %}
+    <div class="line_title">
+        <div class="wrapper">
+            <span class="line_pre"></span> 竞赛
+            <a href="{% url 'competition:main' %}" class="line_more">
+                <span style='color:#000;'>更多竞赛</span>
+                <img src="{% static 'img/re_img/more.png' %}" />
+            </a>
+        </div>
+    </div>
+    {% else %}
+    <div class="line_title">
+        <div class="wrapper">
+            <span class="line_pre"></span> Competitions
+            <a href="{% url 'competition:main' %}" class="line_more">
+                <span style='color:#000;'>More Competitions</span>
+                <img src="{% static 'img/re_img/more.png' %}" />
+            </a>
+        </div>
+    </div>
+    {% endif %}
+
+
+    <div class="wrapper block_wrap row mt10">
+        {% for competition in active_competitions %}
+            {% if not competition.invisible %}
+            <div class="col-sm-4 col-md-3 mb30 mt10" style="margin-top: 21px;">
+                <div class="thumbnail row">
+                    <div class="thumbnail_wrap" style="height:170px">
+                        {% if competition.logo %}
+                        <a href="{% url 'competition:index' competition.uid %}">
+                            <img src="{{ MEDIA_URL }}{{ competition.logo }}" style="width:260px; height:170px;border-radius: 8px;">
+                        </a>
+                        {% endif %}
+
+                        {% if competition.is_over %}
+                        <small class="thumbnail_more down">{% if lang.code == 'zh-hans' %}已结束{% else %}Over{% endif %}</small>
+                        {% elif competition.is_active %}
+                        <small class="thumbnail_more in">{% if lang.code == 'zh-hans' %}正在进行{% else %}Ongoing{% endif %}</small>
+                        {% else %}
+                        <small class="thumbnail_more wait">{% if lang.code == 'zh-hans' %}即将开始{% else %}Coming{% endif %}</small>
+                        {% endif %}
+                    </div>
+
+                    {% if lang.code == 'zh-hans' %}
+                        <div class="thumbnail_wrap1" style="height:145px">
+                            <h4>
+                                <a href="{% url 'competition:index' competition.uid %}">
+                                     <span class="des_text p0" title="{{ competition.name }}">{{ competition.name }}</span>
+                                </a>
+                            </h4>
+                            {% if competition.description %}
+                                <p title="{{ competition.description }}" class="des_twoline">{{ competition.description }}</p>
+                            {% endif %}
+                            <dl style="position:absolute; bottom:10px">
+                                {% if competition.sponsor %}
+                                    <dd>主办方: {{ competition.sponsor }}</dd>
+                                {% endif %}
+                                {% if competition.award %}
+                                    <dd>奖励: {{ competition.award }} </dd>
+                                {% endif %}
+                                <dd>时间轴: {{ competition.start_datetime|date:'Y-m-d' }} ~ {{ competition.end_datetime|date:'Y-m-d' }}</dd>
+                            </dl>
+                        </div>
+                    {% else %}
+                        <div class="thumbnail_wrap1" style="height:145px">
+                            <h4>
+                                <a href="{% url 'competition:index' competition.uid %}">
+                                     <span class="des_text p0" title="{{ competition.name_en }}">{{ competition.name_en }}</span>
+                                </a>
+                            </h4>
+                            {% if competition.description_en %}
+                                <p title="{{ competition.description_en }}" class="des_twoline">{{ competition.description_en }}</p>
+                            {% endif %}
+                            <dl style="position:absolute; bottom:10px">
+                                {% if competition.sponsor_en %}
+                                    <dd>Sponsor: {{ competition.sponsor_en }}</dd>
+                                {% endif %}
+                                {% if competition.award %}
+                                    <dd>Prize: {{ competition.award }} </dd>
+                                {% endif %}
+                                <dd>Timeline: {{ competition.start_datetime|date:'Y-m-d' }} ~ {{ competition.end_datetime|date:'Y-m-d' }}</dd>
+                            </dl>
+                        </div>
+                    {% endif %}
+
+                {% if competition.is_active %}
+                    {% if lang.code == 'zh-hans' %}
+                        <div class="block_wrap_shade">
+                            <p>比赛将于{{ competition.end_datetime|date:'Y-m-d' }}结束</p>
+                            <a href="{% url 'competition:index' competition.uid %}">立即参与</a>
+                        </div>
+                    {% else %}
+                        <div class="block_wrap_shade">
+                            <p>End on the date {{ competition.end_datetime|date:'Y-m-d' }}</p>
+                            <a href="{% url 'competition:index' competition.uid %}">JOIN NOW</a>
+                        </div>
+                    {% endif %}
+                {% elif not competition.is_over %}
+                    {% if lang.code == 'zh-hans' %}
+                        <div class="block_wrap_shade">
+                            <p>比赛将于{{ competition.start_datetime|date:'Y-m-d' }}开始</p>
+                            <a href="{% url 'competition:index' competition.uid %}">立即报名</a>
+                        </div>
+                    {% else %}
+                        <div class="block_wrap_shade">
+                            <p>End on the date {{ competition.start_datetime|date:'Y-m-d' }}</p>
+                            <a href="{% url 'competition:index' competition.uid %}">JOIN NOW</a>
+                        </div>
+                    {% endif %}
+                {% endif %}
+
+                </div>
+            </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+    <div class="text-center mb30">
+        <a href="{% url 'competition:main' %}" class="more_class">
+            {% if lang.code == 'zh-hans' %}
+                更多竞赛
+            {% else %}
+                More Competitions
+            {% endif %}
+        </a> 
+    </div>
+
+
+    {% if lang.code == 'zh-hans' %}
+    <div class="line_title">
+        <div class="wrapper">
+            <span class="line_pre" style="background:#efa100"></span> 课程
+            <a href="{% url 'course:index' %}" class="line_more">
+                <span style='color:#000;'>更多课程</span>
+                <img src="{% static 'img/re_img/more1.png' %}" />
+            </a>
+        </div>
+    </div>
+    {% else %}
+    <div class="line_title">
+        <div class="wrapper">
+            <span class="line_pre" style="background:#efa100"></span> Courses
+            <a href="{% url 'course:index' %}" class="line_more">
+                <span style='color:#000;'>More Courses</span>
+                <img src="{% static 'img/re_img/more1.png' %}" />
+            </a>
+        </div>
+    </div>
+    {% endif %}
+    <div class="wrapper block_wrap row mt10">
+        {% for course in active_courses %}
+            {% if not course.invisible %}
+            <div class="col-sm-4 col-md-3 mb30 mt10" style="margin-top: 21px;">
+                <div class="thumbnail row">
+                    <div class="thumbnail_wrap" style="height:170px">
+                        {% if course.logo %}
+                        <a href="{% url 'course:view' course.pk %}">
+                            <img src="{{ MEDIA_URL }}{{ course.logo }}" style="width:276px; height:170px;border-radius: 8px;">
+                        </a>
+                        {% endif %}
+
+                        {% if course.is_over %}
+                            <small class="thumbnail_more down">{% if lang.code == 'zh-hans' %}已结束{% else %}Over{% endif %}</small>
+                        {% elif course.is_active %}
+                            <small class="thumbnail_more in">{% if lang.code == 'zh-hans' %}正在进行{% else %}Ongoing{% endif %}</small>
+                        {% else %}
+                            <small class="thumbnail_more wait">{% if lang.code == 'zh-hans' %}即将开始{% else %}Coming{% endif %}</small>
+                        {% endif %}
+                    </div>
+
+                    {% if lang.code == 'zh-hans' %}
+                        <div class="thumbnail_wrap1">
+                            <h4>
+                                <a href="{% url 'course:view' course.pk %}">
+                                     <span class="des_text p0" title="{{ course.name }}">{{ course.name }}</span>
+                                </a>
+                            </h4>
+                            <p title="{{ course.description }}" class="des_twoline">{{ course.description }}</p>
+                            <dl>
+                                <dd>授课老师: {{ course.tutor_name }}</dd>
+                                <dd>所属院校: {{ course.school }} </dd>
+                                <dd>时间轴: {{ course.start_datetime|date:'Y-m-d' }} ~ {{ course.end_datetime|date:'Y-m-d' }}</dd>
+                            </dl>
+                        </div>
+                    {% else %}
+                        <div class="thumbnail_wrap1">
+                            <h4>
+                                <a href="{% url 'course:view' course.pk %}">
+                                     <span class="des_text p0" title="{{ course.name_en }}">{{ course.name_en }}</span>
+                                </a>
+                            </h4>
+                            <p title="{{ course.description_en }}" class="des_twoline">{{ course.description_en }}</p>
+                            <dl>
+                                <dd>Teacher: {{ course.tutor_name }}</dd>
+                                <dd>School: {{ course.school }} </dd>
+                                <dd>Timeline: {{ course.start_datetime|date:'Y-m-d' }} ~ {{ course.end_datetime|date:'Y-m-d' }}</dd>
+                             </dl>
+                        </div>
+                    {% endif %}
+
+                {% if course.is_active %}
+                    {% if lang.code == 'zh-hans' %}
+                        <div class="block_wrap_shade">
+                            <p>课程将于{{ course.end_datetime|date:'Y-m-d' }}结束</p>
+                            <a href="{% url 'course:view' course.pk %}">立即参与</a>
+                        </div>
+                    {% else %}
+                        <div class="block_wrap_shade">
+                            <p>End on the date {{ course.end_datetime|date:'Y-m-d' }}</p>
+                            <a href="{% url 'course:view' course.pk %}">JOIN NOW</a>
+                        </div>
+                    {% endif %}
+                {% elif not course.is_over %}
+                    {% if lang.code == 'zh-hans' %}
+                        <div class="block_wrap_shade">
+                            <p>课程将于{{ course.start_datetime|date:'Y-m-d' }}开始</p>
+                            <a href="{% url 'course:view' course.pk %}">立即参与</a>
+                        </div>
+                    {% else %}
+                        <div class="block_wrap_shade">
+                            <p>End on the date {{ course.start_datetime|date:'Y-m-d' }}</p>
+                            <a href="{% url 'course:view' course.pk %}">JOIN NOW</a>
+                        </div>
+                    {% endif %}
+                {% endif %}
+
+                </div>
+            </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+    <div class="text-center mb30">
+        <a href="{% url 'course:index' %}" class="more_class" style="background:#efa100">
+            {% if lang.code == 'zh-hans' %}
+                更多课程
+            {% else %}
+                More Courses
+            {% endif %}
+        </a>
+    </div>
+
+
+
+    <script>
+        $("body").css({
+            "background-color": "#eee",
+        });
+
+        $(document).ready(function(){
+            //限制字符个数
+            $(".des_twoline").each(function(){
+                var maxwidth=150;
+                if($(this).text().length>maxwidth){
+                    $(this).text($(this).text().substring(0,maxwidth));
+                    $(this).html($(this).html()+'…');
+                }
+            });
+            $('#myCarousel').carousel({
+                    interval: 5000
+                })
+                //鼠标移入样式
+            $(".block_wrap .col-sm-4").mouseover(function() {
+                $(this).find(".block_wrap_shade").show();
+            });
+            //鼠标移开样式
+            $(".block_wrap .col-sm-4").mouseout(function() {
+                $(this).find(".block_wrap_shade").hide();
+            });
+        });
+
+    </script>
+
+{% endblock %}

@@ -1,0 +1,18 @@
+- model: competition.Competition
+  pk: 1
+  fields:
+    name: AdMaster
+    description: hello
+    host: 1
+    submit_per_day : 5
+    category : 1
+
+    introduction : 1
+    rules : 2
+
+    start_datetime : 2015-09-25T08:16:59.844560+00:00
+    end_datetime : 2015-10-25T08:16:59.844560+00:00
+
+    #logo : models.ImageField(upload_to:"image/competition/")
+    #banner : models.ImageField(upload_to:"image/competition/")
+

@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load i18n %}
+
+{% block title %}Forum{% endblock title %}
+
+{% block body %}
+<div class="bbs min-wrapper">
+    <div style="background-color: #000;">
+        <div id="myCarousel" class="wrapper carousel slide">
+            <!-- 轮播（Carousel）项目 -->
+            <div class="carousel-inner">
+                <div class="item active">
+                    <img src="{% static 'img/re_img/banner_forum.png' %}" alt="First slide" style="width: 100%">
+                    <div class="carousel-caption">
+                        <h2 style="border: none;">
+                            {% trans "Forum" %}
+                        </h2>
+                        <p>{% trans "Mining all about the biendata" %}</p>
+                        <br/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="" style="background-color: #fff;min-height: 1000px;padding: 20px 0;margin-top:10px;margin-bottom: 40px;">
+        <!-- 当前位置 -->
+        <div class="wrapper" style="padding: 15px 10px;font-size: 15px;">
+            <img src="{% static 'img/re_img/home-1.png' %}" alt="" style="width: 12px;margin: -3px 3px 0 0;">
+            <a href="{% url 'index' %}"><span style="color: #4A4A4A">{% trans "Home" %}</span></a>
+            <span>&nbsp;&nbsp;>&nbsp;</span>
+            <span>{% trans "Forum" %}</span>
+        </div>
+
+        <div class="wrapper search">
+            <div class="title" id="myScrollspy">
+                <ul class="option">
+                    <li class="active" role="presentation"><a class="active" href="#home" aria-controls="home" role="tab" data-toggle="tab">{% trans "website" %}</a></li>
+                    <li role="presentation"><a href="#home2" aria-controls="home2" role="tab" data-toggle="tab">{% trans "competition" %}</a></li>
+                    <li role="presentation" ><a href="#home3" aria-controls="home3" role="tab" data-toggle="tab">{% trans "course" %}</a></li>
+                </ul>
+                <span>
+                    <img src="{% static 'img/re_img/new.png' %}" class="icon">
+                    <a href='{% url 'pybb:topic_latest' %}'>{% trans "Last updates in topics" %}</a>
+                </span>
+            </div>
+
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="home">
+                    {% for category in categories %}
+                        {% if category.name  == "Website"  %}
+                            {% include 'pybb/forum_list.html' with forum_list=category.forums_accessed category=category parent_forum='' %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <div role="tabpanel" class="tab-pane" id="home2">
+                    {% for category in categories %}
+                        {% if category.name == "Competition" %}
+                            {% include 'pybb/forum_list.html' with forum_list=category.forums_accessed category=category parent_forum='' %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <div role="tabpanel" class="tab-pane" id="home3">
+                    {% for category in categories %}
+                        {% if category.name  == "Course"  %}
+                            {% include 'pybb/forum_list.html' with forum_list=category.forums_accessed category=category parent_forum='' %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script>
+
+    var selector = '.option li a';
+    $(selector).click(function(){//点击的时候给当前这个加上，其他的移除
+        $(selector).removeClass('active');
+        $(this).addClass('active');
+        
+    })
+
+</script>
+{% endblock%}

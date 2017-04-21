@@ -1,0 +1,170 @@
+{% extends "course/base.html" %}
+
+{% block title %} {{ course.name }} {% endblock %}
+
+{% block content %}
+    <div class="row">
+        <h2 class="col-xs-12 col-md-12 col-lg-12">{{ course.name }}</h2>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-md-12 col-lg-12">
+            <table class="info-table">
+                <caption>Basic Information</caption>
+                <tr>
+                    <th>Tutor</th>
+                    <td>{{ course.tutor.info.display_name }}</td>
+                </tr>
+                {% if course.teaching_assistants.all %}
+                <tr>
+                    <th>Teaching Assistants</th>
+                    <td>
+                    {% for ta in course.teaching_assistants.all %}
+                        {{ ta.info.display_name }}
+                    {% endfor %}
+                    </td>
+                </tr>
+                {% endif %}
+                <tr>
+                    <th>School</th>
+                    <td>{{ course.school }}</td>
+                </tr>
+                <tr>
+                    <th>Session</th>
+                    <td>{{ course.start_datetime }} - {{ course.end_datetime }}</td>
+                </tr>
+                <tr>
+                    <th>Description</th>
+                    <td>{{ course.description }}</td>
+                </tr>
+                <tr>
+                    <th>Assignment</th>
+                    <td><a href="{% url 'competition:index' course.competition.uid %}">{{ course.competition.name }}</a></td>
+                </tr>
+                {% if manage and course.register_code %}
+                <tr>
+                    <th>Register code</th>
+                    <td>{{ course.register_code }}</td>
+                </tr>
+                {% endif %}
+                {% if manage or assistant %}
+                <tr>
+                    <th>Students</th>
+                    <td>{{ course.students.all.count }} in total, <a href="{% url 'course:students' course.pk 1 %}">View all students</a></td>
+                </tr>
+                {% endif %}
+            </table>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12 col-md-12 col-lg-12">
+            <table class="detail-table">
+                <caption>Teaching Assistants</caption>
+                {% for ta in course.teaching_assistants.all %}
+                    <tr>
+                        <th>{{ ta.info.display_name }}
+                            {% if manage and ta.email %} ({{ ta.email }}) {% endif %}</th>
+                        {% if manage %}
+                            <td>
+                                <a href="{% url 'course:delete_ta' course.pk ta.pk %}">Delete</a>
+                            </td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+
+    {% if manage %}
+        <div class="row">
+            <div class="col-xs-12 col-md-12 col-lg-12">
+                <form role="form" action="{% url 'course:add_ta' course.pk %}" method="POST">
+                    {% csrf_token %}
+                    <div class="input-group">
+                        <input type="email" name="email" class="form-control" placeholder="Enter new TA's email">
+                    <span class="input-group-btn">
+                        <input type="submit" value="Add" class="btn btn-default">
+                    </span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    {% elif not assistant%}
+        {% if open_navigate %}
+        <div class="row">
+            <div class="col-xs-12 col-md-12 col-lg-12">
+                <form role="form" action="{% url 'course:signup' course.pk %}" method="POST">
+                    {% csrf_token %}
+                    <div class="input-group">
+                        <input type="text" name="code" class="form-control" placeholder="This course requires register code">
+                    <span class="input-group-btn">
+                        <input type="submit" value="Sign Up" class="btn btn-default">
+                    </span>
+                    </div>
+                </form>
+            </div>
+        </div>
+        {% endif %}
+    {% endif %}
+
+
+    {% if manage %}
+        <div class="row">
+            <div class="col-xs-12 col-md-12 col-lg-12">
+                <table class="detail-table">
+                    <caption>Register</caption>
+                </table>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12 col-md-12 col-lg-12">
+                <form role="form" action="{% url 'course:add_stu' course.pk %}" method="POST">
+                    {% csrf_token %}
+                    <div class="input-group">
+                        <input type="email" name="email" class="form-control" placeholder="Enter new Student's email">
+                    <span class="input-group-btn">
+                        <input type="submit" value="Add" class="btn btn-default">
+                    </span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    {% elif not signed_up and open_navigate%}
+        <div class="row">
+            <div class="col-xs-12 col-md-12 col-lg-12">
+                <table class="detail-table">
+                    <caption>Register</caption>
+                </table>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12 col-md-12 col-lg-12">
+                <form role="form" action="{% url 'course:signup' course.pk %}" method="POST">
+                    {% csrf_token %}
+                    <div class="input-group">
+                        <input type="text" name="code" class="form-control" placeholder="This course requires register code">
+                    <span class="input-group-btn">
+                        <input type="submit" value="Sign Up" class="btn btn-default">
+                    </span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    {% endif %}
+
+
+    {% if manage %}
+        <div class="row">
+            <div class="col-xs-12 col-md-12 col-lg-12">
+                <div class="btn-group pull-right">
+                    <a class="btn btn-primary" href="{% url 'course:edit' course.pk %}">
+                        Edit Information
+                    </a>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    
+{% endblock %}

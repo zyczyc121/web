@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block title %}about{% endblock %}
+
+{% block body %}
+<style type="text/css">
+#doc-title h1 {
+    line-height: 2.625;
+    text-align: center;
+    font-size: 2.5em;
+    font-weight: normal;
+    color: #6f7073;
+}
+.doc-inside {
+    width: 750px;
+    margin: 1.5em auto 9em;
+    display: block;
+    float: none;
+}
+#doc-content p {
+    font-family: 'Open Sans',"Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 17px;
+    line-height: 1.45;
+    color: #333;
+    display: block;
+    -webkit-margin-before: 1em;
+    -webkit-margin-after: 1em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    margin: 0.75em 0;
+}
+</style>
+
+    <div id="doc-title">
+        <h1 style="text-align: center;">About</h1>
+    </div>
+    <div class="doc-inside">
+        <div id="doc-content">
+            <p><a style="color: #20beff;" href="{% url 'index' %}">Biendata.com</a> is a platform for providing data science competitions to meet different enterprises and organizations needs. We are committed to helping you solve challenging data related problems in order to make your business more smart.</p>
+            <br><p>With <a style="color: #20beff;" href="{% url 'index' %}">biendata.com</a>, anyone, no matter you are IT professionals or university students, can find opportunities and use your talent to solve real world problems.</p>
+        </div>
+    </div>
+
+{% endblock %}

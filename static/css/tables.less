@@ -1,0 +1,168 @@
+#id-data-table {
+  width: 100%;
+  margin: auto;
+  text-align: left;
+}
+
+.page-info {
+  opacity: 0.8;
+  font-size: 0.8em;
+  .team-name {
+    font-weight: bold;
+  }
+}
+
+.leaderboard-info {
+  opacity: 0.8;
+  font-size: 0.8em;
+}
+
+#id-submission-table {
+  width: 100%;
+  th {
+    line-height: 1.5;
+  }
+}
+
+#id-leaderboard {
+  width: 100%;
+  margin: 0 auto 1em;
+  text-align: center;
+  border: 1px solid #e5e5e5;
+  font-size: 1em;
+  td {
+    padding: 0.5em 0.25em;
+  }
+  th {
+    padding: 1.5em 0 0.5em;
+    text-align: center;
+    vertical-align: bottom;
+    font-size: 0.75em;
+    font-weight: bold;
+    color: #888;
+    display: table-cell;
+  }
+  th:first-child, td:first-child {
+    padding-left: 1em;
+    text-align: center;
+    font-size: 0.75em;
+  }
+
+  th:nth-child(3), td:nth-child(3), th:nth-child(6), td:nth-child(6) {
+    padding-left: 0.75em;
+    text-align: left;
+  }
+
+  tr:nth-child(2) {
+    width: 40px;
+  }
+
+  .rank {
+    opacity: 0.7;
+  }
+  .score {
+    color: #2699c7;
+    max-width: 25em;
+    overflow: hidden;
+  }
+  .team-up {
+    color: green
+  }
+  .team-down {
+    color: red;
+  }
+  .delta {
+    font-size: 0.75em;
+  }
+
+  ul.team-members {
+    padding-left: 0;
+    margin-top: 0.5em;
+    display: none;
+    li {
+      color: #888;
+      list-style: disc inside;
+      padding-left: 1em;
+      font-size: 0.8em;
+      line-height: 1.3;
+
+    }
+  }
+
+  td.result {
+    background-color: #2aa6d7;
+    color: white;
+    font-size: 1em;
+    padding: 1em 0.75em 1em;
+    text-align: left;
+  }
+
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+
+}
+
+#id-upload-div {
+  background: lighten(#3498db, 20%);
+  position: relative;
+  text-align: center;
+  height: 7.5em;
+  padding-top: 2em;
+  cursor: pointer;
+
+  #id-fileupload {
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    position: absolute;
+  }
+}
+
+#id-progress-div {
+  //overflow: hidden;
+  height: 2em;
+  .progress-bar {
+    height: 100%;
+    border-radius: 0.2em;
+  }
+}
+
+/*error text*/
+#id-error-text {
+    margin-bottom: 0;
+    //padding:1em 0;
+}
+
+#id-description-div {
+  background-color: #f7f7f7;
+  padding: 1em;
+  textarea {
+    width: 100%;
+  }
+}
+#id-submit {
+  display:block;
+  margin: 1em auto 5px;
+}
+
+
+// submit as
+#id-submit-as {
+  text-align: center;
+  div {
+    padding:0;
+  }
+  div:first-child{
+    border-right: 1px solid #888;
+  }
+  a {
+    margin:auto;
+  }
+  p {
+    text-align: center;
+    padding: 0 10%;
+  }
+}
+

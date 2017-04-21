@@ -1,0 +1,30 @@
+{% load select_active %}
+<div class="row">
+    <div class="col-xs-12 col-md-12 col-lg-12">
+        <ul class="bread-nav">
+            <li class="{% select_active 'basic' active %}">
+                <a href="{% url 'course:edit_assignment' course.pk assignment.pk %}">
+                    Basic Information<span class="glyphicon glyphicon-menu-right"></span>
+                </a>
+            </li>
+{#            <li class="{% select_active 'privacy' active %}">#}
+{#                <a href="{% url 'course:edit_detail' course.pk assignment.pk %}">#}
+{#                    Privacy Settings<span class="glyphicon glyphicon-menu-right"></span>#}
+{#                </a>#}
+{#            </li>#}
+            <li class="{% select_active 'data' active %}">
+                <a href="{% url 'course:edit_data' course.pk assignment.pk %}">
+                    Data Files<span class="glyphicon glyphicon-menu-right"></span>
+                </a>
+            </li>
+            <li class="{% select_active 'detail' active %}">
+                <a href="{% url 'course:edit_detail' course.pk assignment.pk %}">
+                    Detail Pages<span class="glyphicon glyphicon-menu-right"></span>
+                </a>
+            </li>
+            <li class="{% select_active 'evaluation' active %}">
+                <a href="{% url 'course:edit_evaluation' course.pk assignment.pk %}">Evaluation</a>
+            </li>
+        </ul>
+    </div>
+</div>

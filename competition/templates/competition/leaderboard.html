@@ -1,0 +1,177 @@
+{% extends "competition/base.html" %}
+
+{% block title %} Leaderboard {% endblock %}
+
+{% block content %}
+
+    {% if competition.uid == 'luckydata' %}
+        <br><h3 class="mb10">Public 排行榜 - {{ competition.name }}</h3><br>
+        <div class="leaderboard-info mb20">
+            <p>日常排行榜均为选手自行校验结果，仅供参考。周排行榜共有六期，分别于4月3日，4月10日，4月17日，4月24日，5月1日，5月8日12:00计算发布。周排行榜测试集只在排行榜生成日期前一天发布（
+如：第一期排行榜测试集将于4月2日12：00发布）请及时下载。</p>
+            <p style="font-size:20px"><strong>周冠军榜 </strong></p>
+        </div>
+    {% else %}
+        {% if lang.code == 'zh-hans' %}
+            <br><h3 class="mb10">Public 排行榜 - {{ competition.name }}</h3><br>
+            <div class="leaderboard-info mb20">
+                <p style="font-size:20px"><strong>周冠军榜 </strong></p>
+                <p>周冠军榜将在每周一中午12点更新..</p>
+            </div>
+        {% else %}
+            <br><h3 class="mb10">Public Leaderboard - {{ competition.name_en }}</h3><br>
+            <div class="leaderboard-info mb20">
+                <p style="font-size:20px"><strong>Week_winners </strong></p>
+                <p>Note this leaderboard shows the evaluation on the validation data set. </p>
+                <p>The final results will be evaluated on the independent test data set. <br /></p>
+            </div>
+            <div class="leaderboard-info mb20">
+                <p>The best team of each week.  </p>
+                <p>This best leaderboard will be updated every monday noon..</p>
+            </div>
+        {% endif %}
+    {% endif %}
+
+    <table class="table-hover" id="id-leaderboard">
+        <thead>
+        <tr>
+            {% if lang.code == 'zh-hans' %}
+                <th>周数</th>
+                {% for i in winner_num %}
+                    <th>第{{i}}名</th>
+                    <th>Public分数</th>
+                {% endfor %}
+            {% else %}
+                <th>weeks</th>
+                {% for i in winner_num %}
+                    <th>Rank{{i}}</th>
+                    <th>Public Score</th>
+                {% endfor %}
+            {% endif %}
+        </tr>
+        </thead>
+        {% for team_list in week_winner %}
+            <tr>
+                {% for team in team_list %}
+                    {% if team.is_first %}
+                        <td class="rank">
+                            {{ team.week }}
+                        </td>
+                    {% endif %}
+                    <td>
+                        <div>
+                            {% if team.single %}
+                                <a class="team-single"
+                                   href="{% url 'user:user' team.leader_id %}">{{ team.leader_name }}</a>
+                            {% else %}
+                                <a target="_blank" class="team-multi">{{ team.team_name }} <span
+                                        class="glyphicon glyphicon-th-list"></span></a>
+                                <ul class="team-members">
+                                    {% for m in team.members %}
+                                        <li><a href="{% url 'user:user' m.id %}">{{ m.name }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </div>
+                    </td>
+                    <td class="score">{{ team.score|floatformat:5 }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
+
+    <div class="leaderboard-info mb20">
+        {% if lang.code == 'zh-hans' %}
+            <p style="font-size:20px"><strong>日常排行榜 </strong></p>
+            <p>排行榜每10分钟更新. </p>
+            <p>如果你发现有参赛者用多个账户参加比赛，请联系管理员.</p>
+        {% else %}
+            <p style="font-size:20px"><strong>Leaderboard </strong></p>
+            <p>Leaderboard will be updated every 10 minutes. </p>
+            <p>If you see anyone use multiple accounts, please let us know.</p>
+        {% endif %}
+
+    </div>
+    <table class="table-hover" id="id-leaderboard">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>&#916;</th>
+
+            {% if lang.code == 'zh-hans' %}
+                <th>队伍名</th>
+                <th>Public分数</th>
+                <th>提交次数</th>
+            {% else %}
+                <th>Team Name</th>
+                <th>Public Score</th>
+                <th>Entries</th>
+            {% endif %}
+
+{#            <th>Last Submission</th>#}
+        </tr>
+        </thead>
+        {% for team in rank %}
+            <tr id="team-{{ team.team_id }}">
+                <td class="rank">
+                    {{ team.rank }}
+                </td>
+                <td class="delta">
+                    {% if team.new %}
+                        <span class="team-new">new</span>
+                    {% elif team.delta > 0 %}
+                        <span class="team-down">↓{{ team.delta }}</span>
+                    {% elif team.delta < 0 %}
+                        <span class="team-up">↑{{ team.delta|stringformat:"+d"|slice:"1:"}}</span>
+                    {% else %}
+                        <span class="team-steady">—</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <div>
+                        {% if team.single %}
+                            <a class="team-single"
+                               href="{% url 'user:user' team.leader_id %}">{{ team.leader_name }}</a>
+                        {% else %}
+                            <a target="_blank" class="team-multi">{{ team.team_name }} <span
+                                    class="glyphicon glyphicon-th-list"></span></a>
+                            <ul class="team-members">
+                                {% for m in team.members %}
+                                    <li><a href="{% url 'user:user' m.id %}">{{ m.name }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                </td>
+                <td class="score">{{ team.score|floatformat:5 }}</td>
+                <td>{{ team.entries }}</td>
+{#                <td>{{ team.last_submission }}</td>#}
+            </tr>
+            {% if submission %}
+                {% ifequal target_tid team.team_id %}
+                    <tr>
+                    <td colspan="6" class="result">
+                        {% if lang.code == 'zh-hans' %}
+                            你的提交分数为 {{ submission.public_score }}.
+                        {% else %}
+                            Your submission scores {{ submission.public_score }}.
+                        {% endif %}
+{#                        {% if improved %}#}
+{#                            It's your best result so far. Keep going.#}
+{#                        {% else %}#}
+{#                            It didn't improve your previous results.#}
+{#                        {% endif %}#}
+                    </td>
+                    </tr>
+                {% endifequal %}
+            {% endif %}
+        {% endfor %}
+    </table>
+{#    <a href="{% url 'competition:leaderboard_raw_data' competition.uid %}">Download raw data</a>#}
+
+    <script type="text/javascript">
+        $('.team-multi').click(function () {
+            $(this).siblings("ul").toggle()
+        });
+    </script>
+{% endblock %}

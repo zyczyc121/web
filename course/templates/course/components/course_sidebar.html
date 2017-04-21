@@ -1,0 +1,24 @@
+<div class="col-xs-6 col-sm-3 col-md-2 sidebar-offcanvas" id="sidebar" style="z-index: 1;">
+    {% if new_course %}
+    <div class="panel panel-default">
+        <div class="panel-heading">New Course</div>
+    </div>
+    {% endif %}
+    {% for course in courses %}
+    <div class="panel panel-default">
+            <div class="panel-heading"><a href="{% url 'course:view' course.pk %}"> {{ course.name }} </a></div>
+            <ul class="list-group">
+                {% for assignment in course.assignments.all %}
+                    <li class="list-group-item">
+                        <a href="{% url 'course:assignment' course.pk assignment.pk %}">{{ assignment.title }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endfor %}
+    </div>
+</div>
+<div class="col-xs-12 col-sm-9 col-md-9">
+    <p class=" visible-xs">
+        <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
+    </p>
+</div>

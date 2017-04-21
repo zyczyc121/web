@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+{% load gravatar %}
+{% block title %}Profile{% endblock %}
+
+
+{% block body %}
+<style>
+    .controls>input,.controls>textarea,.controls>select{
+        width: 60% !important;
+    }
+
+</style>
+
+<div class="mt25 ml10 mr10 pb50">
+    <div class="row mb20">
+        <div class="userinfo-header col-md-6 col-xs-6 col-sm-6 lh35" style="padding-left: 0px;">
+            <span class="display_name">{{ user.info.display_name }} </span>
+            <span class="personal_tag">{{ user.info.personal_tag }}</span>
+        </div>
+    </div>
+
+    <div class="pt25 pb10 pl30 pr30 mb20" style="background-color: #F7F7F7;">
+        <div class="row">
+            <div class="col-sm-3 col-md-3 col-xs-3 mb10">
+                    <div class="img-shade">
+                        <img src="{% static 'img/default.jpg' %}" width="100%" style="width: 150px;"/>
+                        <div class="shade">
+                            <div class="left-top"></div>
+                            <div class="left-bottom"></div>
+                            <div class="right-top"></div>
+                            <div class="right-bottom"></div>
+                        </div>
+                    </div>
+            </div>
+            <div class="col-sm-9 col-md-9 col-xs-9">
+                <p><img src="{% static 'img/tag2.png' %}" width="100%" style="width: 15px;padding-right: 5px;"/>{{ user.email }}</p>
+        
+                {% if lang.code == 'zh-hans' %}            
+                    <p><img src="{% static 'img/tag1.png' %}" width="100%" style="width: 15px;padding-right: 5px;"/>加入时间为 {{ user.date_joined|date:'b d Y' }}</p>
+                {% else %}
+                    <p><img src="{% static 'img/tag1.png' %}" width="100%" style="width: 15px;padding-right: 5px;"/>Joined at {{ user.date_joined|date:'b d Y' }}</p>
+                {% endif %}
+
+            </div>
+        </div>
+
+        <div class="poa t10 r10">
+            {% if user.info.linkedin_url %}
+            <a href="https://www.linkedin.com/in/{{ user.info.linkedin_url }}" class="" style="display: inline-block;width: 34px;height: 40px;background-image: url('/static/img/list.png');background-repeat: no-repeat;background-position: -10px 0px;background-size: 200px;margin: 0 5px;"></a>
+            {% endif %}
+            {% if user.info.github_account %}
+            <a href="https://github.com/{{ user.info.github_account }}" class="" style="display: inline-block;width: 34px;height: 40px;background-image: url('/static/img/list.png');background-repeat: no-repeat;background-position: -108px 0px;background-size: 200px;margin: 0 5px;"></a>
+            {% endif %}
+            {% if user.info.twitter_account %}
+            <a href="#" class="" style="display: inline-block;width: 34px;height: 40px;background-image: url('/static/img/list.png');background-repeat: no-repeat;background-position: -58px 0px;background-size: 200px;margin: 0 5px;"></a>
+            {% endif %}
+                        <a href="#" class="" style="display: inline-block;width: 34px;height: 40px;background-image: url('/static/img/list.png');background-repeat: no-repeat;background-position: -158px 0px;background-size: 200px;margin: 0 5px;"></a>
+        </div>
+    </div>
+
+    {% crispy form %}
+    <select id="tag" style="width: 60%;" name="interests" multiple="multiple"></select>
+
+    <select id="tag2" style="width: 60%;" name="tools" multiple="multiple"></select>
+
+
+</div>
+<script>
+    $(".img-shade").mousemove(function(){
+        $(this).find(".shade").show();
+    }).mouseout(function(){
+        $(this).find(".shade").hide();
+    });
+
+    $(".shade").click(function(){
+        $("#file").click();
+    });
+
+    $(document).ready(function () {
+
+        $("#id-profile-edit-form").append('<input type="file" id="file" name="file" class="none"/>');
+
+        $('#id_interests').val().split(',').forEach(function(data){
+            var option = "<option value='"+data+"' selected='selected'>"+data+"</option>";
+            $("#tag").append(option);
+        });
+
+        $('#id_tools').val().split(',').forEach(function(data){
+            var option = "<option value='"+data+"' selected='selected'>"+data+"</option>";
+            $("#tag2").append(option);
+        });
+
+
+        $("#tag").replaceAll("#id_interests_edit");
+
+        $("#tag2").replaceAll("#id_tools_edit");
+
+        var tags;
+
+        $.getJSON("/user/auto-complete/interest?p=G",function(result){
+            tags = result;
+            $("#tag").select2({
+                placeholder: "Machine learning techniques you are familiar with. Split with ','",
+                tags:tags,
+                tokenSeparators: [","]
+            });
+        });
+
+        $.getJSON("/user/auto-complete/interest?p=G",function(result){
+            tags = null;
+            tags = result;
+            $("#tag2").select2({
+                placeholder: "Tools you are familiar with. Split with ','",
+                tags:tags,
+                tokenSeparators: [","]
+            });
+        });
+
+    });
+
+    $("#id-profile-edit-form").submit(function() {
+        var vals=[], vals2=[];
+        $("#tag").select2("data").forEach(function (data) {
+            vals.push(data.id);
+        });
+        vals = vals.join(',');
+
+        $("#tag2").select2("data").forEach(function (data) {
+            vals2.push(data.id);
+        });
+        vals2 = vals2.join(',');
+
+        $('#id_interests').val(vals);
+        $('#id_tools').val(vals2);
+
+
+
+    });
+
+</script>
+
+{% endblock %}

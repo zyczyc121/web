@@ -1,0 +1,219 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-04-07 19:34+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: scoring.py:40
+msgid "Duplicated uid"
+msgstr "uid重复"
+
+#: scoring.py:42 scoring.py:167
+msgid "length incorrect"
+msgstr "提交行数不正确"
+
+#: scoring.py:53 scoring.py:103 scoring.py:136 scoring.py:150 scoring.py:173
+#: scoring.py:179
+msgid "Wrong format"
+msgstr "格式错误"
+
+#: scoring.py:77
+msgid "Line number of submission is not correct"
+msgstr "提交结果行数不正确"
+
+#: scoring.py:126
+msgid "Column of submission is not correct"
+msgstr "提交结果列数不正确"
+
+#: util.py:215
+#, python-format
+msgid "Team %s Invites You to Join"
+msgstr "队伍 %s 邀请你加入"
+
+#: util.py:221
+msgid "Visit following link to accept the invitation\n"
+msgstr "访问以下链接来接收邀请\n"
+
+#: util.py:222
+msgid "Click"
+msgstr "点击"
+
+#: util.py:222
+#, python-format
+msgid "to accept the invitation. If the link doesn't work, please visit %s"
+msgstr "来接受邀请。如果链接无效，请访问 %s"
+
+#: util.py:240
+msgid "Team merging is not allowed after final submission date"
+msgstr "在最终提交日期后，不再允许合并队伍操作"
+
+#: util.py:244 views.py:350 views.py:356 views.py:378 views.py:381
+msgid "User "
+msgstr "用户 "
+
+#: util.py:244
+msgid " have joined another team."
+msgstr " 已经加入了其他队伍."
+
+#: util.py:246
+msgid "Team size exceeds limit"
+msgstr "队伍人数超过限制"
+
+#: util.py:253
+msgid "Total submission entries exceed limit."
+msgstr "总提交次数超过限制"
+
+#: views.py:41
+msgid "You must accept competition rules to continue"
+msgstr "你必须先点击接受比赛规则，才能进行后续操作"
+
+#: views.py:104 views.py:146 views.py:170 views.py:215 views.py:403
+#: views.py:564 views.py:703 views.py:764 views.py:794 views.py:874
+msgid "This competition is not accessible now"
+msgstr "该比赛现在不可访问"
+
+#: views.py:126
+msgid "Introduction"
+msgstr "简介"
+
+#: views.py:150
+msgid "the final winners list hasn't been released"
+msgstr "最终获奖者名单还未给出"
+
+#: views.py:280
+msgid "Invalid invitation link"
+msgstr "无效的邀请链接"
+
+#: views.py:303
+#, python-format
+msgid "You have successfully joined the team %s."
+msgstr "你已经成功加入队伍 %s."
+
+#: views.py:310
+msgid "The team doesn't exist."
+msgstr "该队伍不存在"
+
+#: views.py:313
+msgid "Competition not found"
+msgstr "未找到该比赛"
+
+#: views.py:316
+msgid "Invitation not found."
+msgstr "未找到该邀请."
+
+#: views.py:319
+msgid "You haven't participated the competition"
+msgstr "你还没加入比赛"
+
+#: views.py:324
+msgid "Unknown error. Please contact site administrator."
+msgstr "未知错误. 请联系管理员"
+
+#: views.py:345 views.py:389
+msgid "You are not the team leader!"
+msgstr "你不是队长！"
+
+#: views.py:348
+msgid "You can't invite yourself!"
+msgstr "你不能邀请自己！"
+
+#: views.py:350
+msgid " is your team member!"
+msgstr " 是你的队员！"
+
+#: views.py:356
+msgid " hasn't activated his/her account."
+msgstr " 还没激活账户"
+
+#: views.py:370
+msgid "Invitation sent."
+msgstr "邀请已发出."
+
+#: views.py:378
+msgid " not found."
+msgstr " 未找到"
+
+#: views.py:381
+msgid " hasn't participated the competition."
+msgstr " 还没加入比赛"
+
+#: views.py:413
+msgid "the competition is not start yet"
+msgstr "比赛尚未开始"
+
+#: views.py:423
+msgid "the validate submission is over"
+msgstr "验证集提交已结束."
+
+#: views.py:433
+msgid ""
+"Allow submissions on the validation set after the competition(don't change "
+"leaderboard)"
+msgstr "允许赛后提交验证集（仅测试，不改变排行榜）"
+
+#: views.py:447 views.py:608
+msgid "Must upload a file"
+msgstr "必须上传一个文件"
+
+#: views.py:456 views.py:617
+msgid "File type not supported"
+msgstr "文件类型不支持"
+
+#: views.py:473 views.py:635 views.py:747
+msgid "Exceeds limit"
+msgstr "提交超过限制"
+
+#: views.py:570
+msgid "the final submisson hasn't been released"
+msgstr "最终提交页面还未放出"
+
+#: views.py:573
+msgid "the competition is over"
+msgstr "比赛已结束."
+
+#: views.py:580
+msgid "you are not allowed to participate in the 2nd round"
+msgstr "无权参加复赛"
+
+#: views.py:697
+msgid "Submission Uploaded Successfully"
+msgstr "上传提交成功"
+
+#: views.py:731
+msgid "Competition has ended."
+msgstr "比赛已结束."
+
+#: views.py:733 views.py:749
+msgid "Not authorized."
+msgstr "未授权"
+
+#: views.py:754
+msgid "Syntax error"
+msgstr "语法错误"
+
+#: views.py:757
+msgid "Database error"
+msgstr "数据库错误"
+
+#: views.py:878
+msgid "the final leaderboard hasn't been released"
+msgstr "最终排名还未放出"
+
+#~ msgid "Only csv is allowed"
+#~ msgstr "只允许csv文件"
+
+#~ msgid "The leaderboard can not be accessed outside the set time"
+#~ msgstr "在规定时间以外排行榜不可访问"

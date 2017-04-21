@@ -1,0 +1,161 @@
+{% extends "competition/base.html" %}
+{% load staticfiles %}
+
+{% block title %} Make Submission {% endblock %}
+
+{% block content %}
+
+    {% if lang.code == 'zh-hans' %}
+        <br><h3>提交</h3><br>
+    {% else %}
+        <br><h3>Make a submission</h3><br>
+    {% endif %}
+    
+    <div class="row">
+        {% if competition.uid == 'luckydata' %}
+            <p>日常排行榜均为选手自行校验结果，仅供参考。周排行榜共有六期，分别于4月3日，4月10日，4月17日，4月24日，5月1日，5月8日12:00计算发布。周排行榜测试集只在排行榜生成日期前一天发布（如：第一期排行榜测试集将于4月2日12：00发布）请及时下载。</p>
+        {% endif %}
+        {% if lang.code == 'zh-hans' %}
+            <p>你的提交将作为队伍 <strong>{{ team.name }}</strong> 的提交</p>
+        {% else %}
+            <p>You're submitting as part of Team <strong>{{ team.name }}</strong></p>
+        {% endif %}    
+            
+        {% if times_left <= 0 %}
+            {% if lang.code == 'zh-hans' %}
+                今天的提交次数已用完，你不能再提交验证集预测结果
+            {% else %}
+                You can't make more submissions of result on the verification data today.
+            {% endif %}  
+            
+        {% else %}
+            {% if lang.code == 'zh-hans' %}
+                <p>你今天还能提交 {{ times_left }} 次验证集预测结果.</p>
+            {% else %}
+                <p>You can still submit {{ times_left }} time{{ times_left|pluralize }} of result on the verification data today.</p>
+            {% endif %}  
+            <div class="col-md-7 p0">
+                <div id="id-upload-div">
+                    <input id="id-fileupload" type="file" name="submissionFile"
+                        data-url="{% url 'competition:make_submission' competition.uid %}">
+                    <input type="button" value="Select File" class="btn btn-primary">
+
+                    <p id="id-file-name"></p>
+
+                </div>
+                <div id="id-progress-div" style="display:none">
+                    <div class="progress-bar" aria-valuenow="70" style="width:0%">
+                    </div>
+                </div>
+                <div id="id-error-text" class="alert text-danger text-center" style="display: none">
+                </div>
+                <div id="id-description-div">
+                    <textarea name="description" id="id-submission-description" rows="6" data-val-length-max="200"                                placeholder="Enter a brief description of this submission here."></textarea>
+                        <button id='id-submit' class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div>
+                    <p><span class="glyphicon glyphicon-file"></span></p>
+                    {% if lang.code == 'zh-hans' %}
+                        <p>请提交一个 {{ competition.filetype }} 文件 (.{{ competition.filetype }})</p>
+                    {% else %}
+                        <p>Please submit a {{ competition.filetype }} file (.{{ competition.filetype }})</p>
+                    {% endif %}  
+{#                    <p>#}
+{#                        Zip is recommended to reduce uploading time#}
+{#                    </p>#}
+                </div>
+                <div>
+                    <p><span class="glyphicon glyphicon-align-left"></span></p>
+                    {% if lang.code == 'zh-hans' %}
+                        <p>预测结果应该包含 {{ competition.num_line }} 行记录.</p>
+                    {% else %}
+                        <p>We expect the solution file to have {{ competition.num_line }} predictions.</p>
+                    {% endif %}  
+                </div>
+            </div>
+        </div>
+            
+            <script type="application/javascript" src="{% static 'jquery-ui-1.11.4/jquery-ui.min.js' %}"></script>
+            <script type="application/javascript" src="{% static 'js/jquery.iframe-transport.js' %}"></script>
+            <script type="application/javascript" src="{% static 'js/jquery.fileupload.js' %}"></script>
+            <script>
+                var queryResult = function (query_url, res_url, err_url) {
+                    console.log("start");
+                    var worker = function () {
+                        console.log("work");
+                        $.getJSON(query_url, function (data) {
+                            console.log(data);
+                            if (data.status == 'pending') {
+                                setTimeout(worker, 3000);
+                            } else if (data.status=='error') {
+                                window.location.href = err_url;
+                            } else {
+                                window.location.href = res_url;
+                            }
+                        });
+                    }
+                    worker();
+                }
+                $(function () {
+                    $('#id-fileupload').fileupload({
+                        dataType: 'json',
+                        formData: [
+                            {name: "csrfmiddlewaretoken", value: "{{ csrf_token }}"},
+                        ],
+                        sequentialUploads: true,
+                        add: function (e, data) {
+                            $("#id-file-name").text(data.files[0].name);
+
+                            $("#id-submit").click(function () {
+                                var arr = new Array()
+                                arr = data.files[0].name.split('.');
+                                var type = arr[1];
+
+                                if(type == "{{ competition.filetype }}"){
+                                    $('#id-progress-div').show();
+                                }
+                                data.submit();
+                                $(this).text("Uploading...");
+                                $(this).prop("disabled", true);
+                            });
+                        },
+                        progressall: function (e, data) {
+                            var progress = parseInt(data.loaded / data.total * 100, 10);
+                            console.log("Progress" + progress)
+                            $('#id-progress-div .progress-bar').css(
+                                    'width',
+                                    progress + '%'
+                            )
+                        },
+
+                        done: function (e, data) {
+                            result = data.result;
+
+                            $('#id-submit').text('Evaluating...');
+                            console.log(result)
+                            console.log(result.query_url);
+                            console.log(result.res_url);
+                            console.log("start");
+
+                            if (result.success) {
+                                $('#id-progress-div .progress-bar').addClass('progress-bar-striped active');
+                                queryResult(result.query_url, result.res_url, result.err_url)
+                            } else {
+                                $('#id-error-text').attr('style','display:block');
+                                $('#id-error-text').html(result.msg);
+                                $('#id-progress-div').attr('style','display:none');
+                                location.reload();
+                            }
+                        },
+
+                        /*fileSize and fileType*/
+
+
+
+                    });
+                });
+            </script>
+        {% endif %}
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+{% get_language_info for LANGUAGE_CODE as lang %}
+{% block title %}Activate your account {% endblock %}
+{% block body %}
+    <div class="row pt30">
+        <div class="col-md-6 col-md-offset-3  col-xs-6 col-xs-offset-3  col-sm-6 col-sm-offset-3">
+           
+            {% if lang.code == 'zh-hans' %}
+                <h1 class="mb10">
+                    激活你的账户
+                </h1>
+            {% else %}
+                <h1 class="mb10">
+                    Activate Your Account
+                </h1>
+            {% endif %}
+
+            {% crispy form %}
+        </div>
+    </div>
+
+{% endblock %}
